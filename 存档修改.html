@@ -87,6 +87,8 @@
           </el-button>
         </el-tooltip>
 
+        <el-button @click="eventalert('getItem','delete',$event)">清空所有道具</el-button>
+
         <!--无限金钱-->
         <el-button @click="eventalert('xinyongdianMax',null,$event)">无限信用点</el-button>
 
@@ -139,9 +141,9 @@
       <el-tab-pane label="物品栏" name="aitemu">
 
         <div class="zidingyi">
-          物品ID(附全道具): <el-input-number size="mini" v-model.number="itemindex" :max="549" :min="0"></el-input-number>
+          物品ID(附全道具): <el-input-number size="mini" v-model.number="itemIndex" :max="itemLength" :min="0"></el-input-number>
           <br>
-          物品数量(0是删除): <el-input-number size="mini" v-model.number="itemnum" :max="99" :min="0"></el-input-number>
+          物品数量(0是删除): <el-input-number size="mini" v-model.number="itemNum" :max="99" :min="0"></el-input-number>
           <el-button @click="eventalert('getItem',null,$event)">获取自定义物品</el-button>
         </div>
 
@@ -244,12 +246,12 @@
         savesuicchi: 'auto',
 
         //自定义道具获取
-        itemindex: 0,
-        itemnum: 0,
+        itemIndex: 0,
+        itemNum: 0,
       },
 
-      //多存档切换
       computed: {
+        //多存档切换
         save() {
           //没上传时不处理
           if (!this.saves.autoSlot) return
@@ -265,6 +267,11 @@
             return this.saves.autoSlot
           }
           return this.saves.slots[savesuicchi]
+        },
+
+        //获取当前存档的道具ID范围
+        itemLength (){
+          return this.saves.autoSlot.player.items.length
         }
       },
 
@@ -312,7 +319,6 @@
         encrypt(存档) {
           return '[-!_0_!-]' + CryptoJS.AES.encrypt(JSON.stringify(存档), ':_.NaN0').toString()
         },
-
         /*
           对整个存档进行处理,根据参数做不同的处理
           -----------------------------------------
@@ -349,7 +355,6 @@
             this.savedownload(修改过的存档)
           }
         },
-
         //下载存档到本地
         savedownload(存档) {
           存档 = JSON.stringify(存档)
@@ -358,22 +363,6 @@
           a.href = URL.createObjectURL(new Blob([存档], { type: 'application/json' }))
           a.click()
         },
-
-        //封装提示信息
-        vuealert(txt) {
-          const h = this.$createElement
-          this.$notify({
-            title: '操作通知',
-            message: h('i', { style: 'color: teal' }, txt)
-          })
-        },
-
-        //封装事件触发提示信息,允许传递一个参数
-        eventalert(name, data, e) {
-          this[name] && this[name](data)
-          this.vuealert(`操作成功${e.target.textContent}`)
-        },
-
         //复制存档路径到剪切板
         jianqieban() {
           let url = 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'
@@ -386,19 +375,46 @@
               this.vuealert(`没有复制权限,请尝试手动操作${url}`)
             })
         },
+        //封装提示信息
+        vuealert(txt) {
+          const h = this.$createElement
+          this.$notify({
+            title: '操作通知',
+            message: h('i', { style: 'color: teal' }, txt)
+          })
+        },
+        //封装事件触发提示信息,允许传递一个参数
+        eventalert(name, data, e) {
+          this[name] && this[name](data)
+          this.vuealert(`操作成功${e.target.textContent}`)
+        },
+
+        
 
         /*
           封装一个添加道具的函数
           接受一个二维数组,只允许存在2个成员
           0:  道具ID
           1:  数量(0是删除,最大99)
+          ---------------------------------
+          如果传递delete是清空道具
+          如果传递null直接使用自定义添加
         */
         getItem(arr) {
+
+          //清空道具
+          if(arr === 'delete'){
+            this.save.player.items.forEach((i,x)=>{
+              this.save.player.items[x] = null
+            })
+            return
+          }
+
           //没有传递参数的情况下使用自定义参数
           if (!arr) {
-            let { itemx, itemnum } = this
-            if (!itemnum) itemnum = null
-            this.save.player.items[itemx] = itemnum
+            let { itemIndex, itemNum } = this
+            if (!itemNum) itemnum = null
+            this.save.player.items[itemIndex] = itemNum
             return
           }
 
@@ -409,7 +425,6 @@
             this.save.player.items[itemId] = itemnum
           })
         },
-
         //技能点全99
         dianluMax() {
           this.save.player.skillPoints.forEach((_, x) => {
@@ -422,7 +437,7 @@
         //信用点满
         xinyongdianMax() {
           this.save.player.credit = 9999999
-        }
+        },
       },
 
     }).$mount(app)

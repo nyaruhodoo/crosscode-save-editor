@@ -3,14 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>存档修改器</title>
+  <title>存档修改器1.2.0-4</title>
   <base target='_blank' />
   <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon" />
   <link rel="stylesheet" href="./lib/element-ui/index.css">
   <link rel="stylesheet" href="./lib/index.css">
   <script>
     //判断IE浏览器
-    /MSIE|Trident/.test(window.navigator.userAgent) && window.alert('不要使用IE浏览器打开\n请使用Edge,Crhome,Firefox')
+    /MSIE|Trident|360/.test(window.navigator.userAgent) && window.alert('不要使用IE浏览器打开\n请使用Edge,Chrome,Firefox')
   </script>
   <script src="./lib/aes.js"></script>
   <script src="./lib/vue.js"></script>
@@ -23,34 +23,36 @@
 
 
   <div id="app" v-cloak>
-    <!--存档操作-->
+    <!--上传下载,存档切换相关-->
     <div class="save">
-      <!--上传存档-->
-      <label class="upload">
-        <div class="top">
+      <!--存档操作-->
+      <div class="top">
+        <!--上传存档-->
+        <label class="upload">
           <input type="file" @change="getsave" ref="file">
           <i class="el-icon-upload2"></i>
           <p>上传存档</p>
-        </div>
+        </label>
 
-        <!--复制路径到剪切板-->
-        <el-button type="success" @click="jianqieban">不知道路径?</el-button>
-      </label>
-
-      <!--下载存档-->
-      <div class="download" v-if="saves.autoSlot">
-        <div class="top">
+        <!--下载存档-->
+        <div class="download" v-if="save">
           <i class="el-icon-download downloadsave" @click="decryptOrEncrypt(saves,true)"></i>
           <p>下载存档</p>
         </div>
+      </div>
+
+      <!--帮助按钮-->
+      <div class="bottom">
+        <!--复制路径到剪切板-->
+        <el-button type="success" @click="jianqieban" class="left">不知道路径?</el-button>
 
         <!--多存档选择-->
-        <div v-if="saves.slots.length">
+        <div v-if="save && saves.slots.length">
           <el-button type="success" @click="showsuicchi = !showsuicchi">
             多存档切换
           </el-button>
 
-          <ul v-show="showsuicchi" class="savesuicchi">
+          <ul v-show="showsuicchi" class="saves">
             <!--自动存档-->
             <li>
               <el-radio v-model="savesuicchi" label="auto">
@@ -74,20 +76,24 @@
         </div>
       </div>
     </div>
+    
 
     <!--数据修改模块-->
     <el-tabs v-model="activeName" class="data" v-if="save">
-
       <el-tab-pane label="便捷功能" name="bianjie">
         <!--获取指定道具-->
-        <el-tooltip class="item" effect="dark" content="一些装饰品和消耗品,作者跑鞋,以及宝箱相关钥匙和搜寻器" placement="right">
+        <el-tooltip class="item" effect="dark" 
+        content="一些时装和衣服,作者跑鞋,宝箱相关钥匙和搜寻器" placement="right">
           <el-button
             @click="eventalert('getItem',[[247,1],[63,99],[496,99],[501,1],[154,1],[155,1],[156,1],[168,1],[101,1],[16,1],[498,1]],$event)">
             一键获取道具
           </el-button>
         </el-tooltip>
 
-        <el-button @click="eventalert('getItem','delete',$event)">清空所有道具</el-button>
+        <el-button @click="eventalert('getItem','delete',$event)"
+        content="不包含忍者服和身上穿的装备" placement="right">
+          清空所有道具
+        </el-button>
 
         <!--无限金钱-->
         <el-button @click="eventalert('xinyongdianMax',null,$event)">无限信用点</el-button>
@@ -104,48 +110,31 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="二周目" name="erzhoumu">
-        <el-button @click="save.newGamePlus.active = true">开启二周目功能(普通存档需要点)</el-button>
-        <div class="erzhoumu">
-          无限SP: <el-switch v-model="save.newGamePlus.options['infinite-sp']"></el-switch>
-          取消电路限制: <el-switch v-model="save.newGamePlus.options['remove-skill-blocks']"></el-switch>
-          取消过载: <el-switch v-model="save.newGamePlus.options['overload-disable']"></el-switch>
-
-          <br>
-
-          食物无CD: <el-switch v-model="save.newGamePlus.options['item-cd-zero']"></el-switch>
-          食物时间翻倍: <el-switch v-model="save.newGamePlus.options['double-buff-time']"></el-switch>
-
-          <br>
-
-          少女时间: <el-switch v-model="save.newGamePlus.options['witch-time']"></el-switch>      
-          冲刺浓缩: <el-switch v-model="save.newGamePlus.options['dash-1']"></el-switch>
-          一击必杀(莉亚自己): <el-switch v-model="save.newGamePlus.options['lea-must-die']"></el-switch>
-          一击必杀(针对敌人): <el-switch v-model="save.newGamePlus.options['sergey-hax']"></el-switch>
-
-          <br>
-
-          4倍经验: <el-switch v-model="save.newGamePlus.options['exp-plus-4']"></el-switch>
-          4倍信用点: <el-switch v-model="save.newGamePlus.options['money-plus-4']"></el-switch>
-          4倍掉落率: <el-switch v-model="save.newGamePlus.options['drop-rate-4']"></el-switch>
-
-          <br>
-
-          怪物等级跟随莉亚: <el-switch v-model="save.newGamePlus.options['harder-enemies']"></el-switch>
-          怪物更积极进攻: <el-switch v-model="save.newGamePlus.options['scale-enemies']"></el-switch>
-          普通怪物主动攻击: <el-switch v-model="save.newGamePlus.options['enemy-aggro']"></el-switch>
-        </div>
-        </el-switch>
-      </el-tab-pane>
-
       <el-tab-pane label="物品栏" name="aitemu">
 
         <div class="zidingyi">
-          物品ID(附全道具): <el-input-number size="mini" v-model.number="itemIndex" :max="itemLength" :min="0"></el-input-number>
-          <br>
-          物品数量(0是删除): <el-input-number size="mini" v-model.number="itemNum" :max="99" :min="0"></el-input-number>
+          <div class="itemshuzhi">
+            <div class="itemid">
+              <span>物品ID(附全道具):</span>
+              <el-input-number size="mini" v-model.number="itemIndex" :max="itemLength" :min="0">
+              </el-input-number>
+            </div>
+            <div class="itemnum">
+              <span>物品数量(0是删除):</span>
+              <el-input-number size="mini" v-model.number="itemNum" :max="99" :min="0"></el-input-number>
+            </div>
+          </div>
+
           <el-button @click="eventalert('getItem',null,$event)">获取自定义物品</el-button>
         </div>
+
+
+
+        <el-tooltip class="item" effect="dark" 
+        content="不出错不要乱点,具体使用看帮助" placement="right">
+          <el-button @click="eventalert('itemxiufu',null,$event)" >修复道具出错</el-button>
+        </el-tooltip>
+        
 
         <el-tooltip class="item" effect="dark" content="强化地图怪物,建议通关后再使用" placement="right">
           <el-button @click="eventalert('getItem',[[448,1],[449,1],[450,1],[451,1],[452,1],[453,1]],$event)">获取地区强化剂
@@ -155,32 +144,28 @@
         <el-button @click="eventalert('getItem',[513,2],$event)">获取高攻专武器</el-button>
       </el-tab-pane>
 
-      <el-tab-pane label="伙伴" name="paatelii">
-        <div class="renwu">
-          <div class="amiri">
-            <img src="./img/emilie.png" height="176">
-            <el-input-number v-model="save.party.models.Emilie.level" :min="1" :max="99" size="mini" :controls="false">
-            </el-input-number>
-          </div>
-          <div class="long">
-            <img src="./img/glasses.png">
-            <el-input-number v-model="save.party.models.Glasses.level" :min="1" :max="99" size="mini" :controls="false">
-            </el-input-number>
-          </div>
-          <div class="boluo">
-            <img src="./img/fancyguy.png">
-            <el-input-number v-model="save.party.models.Apollo.level" :min="1" :max="99" size="mini" :controls="false">
-            </el-input-number>
-          </div>
-          <div class="qiaoen">
-            <img src="./img/sidekick.png" width="160" height="176">
-            <el-input-number v-model="save.party.models.Joern.level" :min="1" :max="99" size="mini" :controls="false">
-            </el-input-number>
-          </div>
+      <el-tab-pane label="伙伴等级" name="paatelii" class="huoban">
+        <div class="amiri">
+          <img src="./img/emilie.png" height="176">
+          <el-input-number v-model="save.party.models.Emilie.level" :min="1" :max="99" size="mini" :controls="false">
+          </el-input-number>
         </div>
-        
-        <p>阿波罗的等级可能会影响剧情pk,建议后期再进行修改</p>
-        <p>公会里的其他人员也可以添加到队伍,感觉破坏了存档,就懒得添加了</p>
+        <div class="long">
+          <img src="./img/glasses.png">
+          <el-input-number v-model="save.party.models.Glasses.level" :min="1" :max="99" size="mini" :controls="false">
+          </el-input-number>
+        </div>
+        <div class="boluo">
+          <img src="./img/fancyguy.png">
+          <el-input-number v-model="save.party.models.Apollo.level" 
+          :min="1" :max="99" size="mini" :controls="false">
+          </el-input-number>
+        </div>
+        <div class="qiaoen">
+          <img src="./img/sidekick.png" width="160" height="176">
+          <el-input-number v-model="save.party.models.Joern.level" :min="1" :max="99" size="mini" :controls="false">
+          </el-input-number>
+        </div>
       </el-tab-pane>
 
       <el-tab-pane label="竞技场" name="arena">
@@ -196,6 +181,124 @@
             获取竞技场相关装备</el-button>
         </el-tooltip>
 
+        <p>原本是有全白金功能,但是考虑后还是给去掉了,毕竟可以直接拿到道具了</p>
+      </el-tab-pane>
+
+      <el-tab-pane label="二周目" name="erzhoumu" v-if="save.newGamePlus" class="erzhoumu">
+        <div class="top">
+          <span>是否使功能生效:</span>
+          <el-switch v-model="save.newGamePlus.active" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </div>
+        
+        <div class="bottom">
+          <div class="zengqiang">
+            <p>增强型:</p>
+            <div class="sp">
+              <span>无限SP:</span>
+              <el-switch v-model="save.newGamePlus.options['infinite-sp']"></el-switch>
+            </div>
+
+            <div class="dianlu">
+              <span>取消电路限制:</span>
+              <el-switch v-model="save.newGamePlus.options['remove-skill-blocks']"></el-switch>
+            </div>
+
+            <div class="guozai">
+              <span>取消过载: </span>
+              <el-switch v-model="save.newGamePlus.options['overload-disable']"></el-switch>
+            </div>
+
+            <div class="zerocd">
+              <span>食物无CD:</span>
+              <el-switch v-model="save.newGamePlus.options['item-cd-zero']"></el-switch>
+            </div>
+
+            <div class="timejiajia">
+              <span>食物时间翻倍:</span>
+              <el-switch v-model="save.newGamePlus.options['double-buff-time']"></el-switch>
+            </div>
+
+            <div class="yiquan">
+              <span>一击必杀(针对敌人): </span>
+              <el-switch v-model="save.newGamePlus.options['sergey-hax']"></el-switch>
+            </div>
+          </div>
+
+          <div class="texing">
+            <p>特性型:</p>
+            <div class="shaonvtime">
+              <span>少女时间:</span>
+              <el-switch v-model="save.newGamePlus.options['witch-time']"></el-switch>  
+            </div>
+
+            <div class="chongci">
+              <span>冲刺浓缩:</span>
+              <el-switch v-model="save.newGamePlus.options['dash-1']"></el-switch>
+            </div>
+          </div>
+
+          <div class="zinue">
+            <p>自虐型:</p>
+            <div class="bisi">
+              <span>一击必杀(莉亚自己):</span>
+              <el-switch v-model="save.newGamePlus.options['lea-must-die']"></el-switch>
+            </div>
+            
+            <div class="guaiwu">
+              <span>怪物等级跟随莉亚:</span>
+              <el-switch v-model="save.newGamePlus.options['harder-enemies']"></el-switch>
+              <span>怪物更积极进攻:</span>
+              <el-switch v-model="save.newGamePlus.options['scale-enemies']"></el-switch>
+              <span>普通怪物主动攻击:</span>
+              <el-switch v-model="save.newGamePlus.options['enemy-aggro']"></el-switch>
+            </div>
+          </div>
+           
+          <div class="shuzhi">
+            <p>数值型:</p>
+            <span>4倍经验:</span>
+            <el-switch v-model="save.newGamePlus.options['exp-plus-4']"></el-switch>
+            <span>4倍信用点:</span>
+            <el-switch v-model="save.newGamePlus.options['money-plus-4']"></el-switch>
+            <span>4倍掉落率:</span>
+            <el-switch v-model="save.newGamePlus.options['drop-rate-4']"></el-switch>
+          </div>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="帮助" name="help" class="help">
+        <div class="helpitme">
+          <p>为什么修改器失效?</p>
+          <p>
+            如果你看到了这句话,那么我的修改器就没有任何问题,请尝试退出游戏重新打开
+          </p>
+        </div>
+
+        <div class="helpitme">
+          <p>为什么添加自定义道具ID受限制?</p>
+          <p>
+            游戏的道具ID并不是一开始就完全开放,会根据获得新物品实时更新
+            你可以尝试添加竞技场相关物品强行开放
+          </p>
+        </div>
+
+        <div class="helpitme">
+          <p>为什么没有宝箱地图全开功能?</p>
+          <p> 修改器用的人太少,我也懒得研究这些....</p>
+        </div>
+
+        <div class="helpitme">
+          <p>为什么进入物品栏直接报错?</p>
+          <p>
+            出现这种原因是因为你的游戏版本过旧,添加了版本不支持的道具。
+            解决办法就是使用我提供的修复功能
+          </p>
+        </div>
+
+        <div class="helpitme">
+          <p>你想要的功能没有?</p>
+          <p>你可以试着联系我(乐不乐意帮你就是另一说了)....</p>
+        </div>
 
       </el-tab-pane>
 
@@ -212,15 +315,15 @@
               <a
                 href="http://tieba.baidu.com/home/main?un=%E5%A6%B9%E8%B0%83%E6%97%A5%E8%AE%B0&ie=utf-8&fr=frs">百度贴吧</a>
             </p>
-            <p><a href="https://github.com/Masotan">Github</a></p>
+            <p><a href="https://github.com/Masotan">Github(给我点个星吧)</a></p>
 
           </div>
         </div>
 
         <!--打钱方式-->
         <div class="daqian">
-          <span>啥?你想打钱?</span>
-          <img src="./img/daqian.png" class="daqian">
+          <p>啥?你想打钱?</p>
+          <img src="./img/daqian.png">
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -232,6 +335,7 @@
     document.querySelector('#audio').volume = 0.25
 
     new Vue({
+      //主要数据
       data: {
         //默认显示作者介绍
         activeName: 'psrx',
@@ -250,6 +354,7 @@
         itemNum: 0,
       },
 
+      //多存档切换
       computed: {
         //多存档切换
         save() {
@@ -271,24 +376,11 @@
 
         //获取当前存档的道具ID范围
         itemLength (){
-          return this.saves.autoSlot.player.items.length - 1
+          return this.save.player.items.length - 1
         }
       },
 
-      //转换下时间
-      filters: {
-        time(time) {
-          let 时 = Math.floor(time / 3600)
-          时 = 时 < 10 ? "0" + 时 : 时
-          let 分 = Math.floor(time % 3600 / 60)
-          分 = 分 < 10 ? "0" + 分 : 分
-          let 秒 = Math.floor(time % 60)
-          秒 = 秒 < 10 ? "0" + 秒 : 秒
-
-          return `${时}:${分}:${秒}`
-        }
-      },
-
+      //关键函数
       methods: {
         //存档上传
         getsave() {
@@ -336,13 +428,10 @@
             //自动存档只有一个
             存档.autoSlot = this.decrypt(存档.autoSlot)
 
-            //全局变量
-            存档.globals = this.decrypt(存档.globals)
-
             //研究存档时打开   
             //this.savedownload(存档)
 
-            //需要处理的就以上3个属性,保存到vue中
+            //需要处理的就2个属性,保存到vue中这里不做数据绑定
             this.saves = 存档
           }
 
@@ -351,7 +440,6 @@
             let 修改过的存档 = JSON.parse(JSON.stringify(存档))
             修改过的存档.slots = 修改过的存档.slots.map(i => this.encrypt(i))
             修改过的存档.autoSlot = this.encrypt(修改过的存档.autoSlot)
-            修改过的存档.globals = this.encrypt(修改过的存档.globals)
             this.savedownload(修改过的存档)
           }
         },
@@ -425,6 +513,10 @@
             this.save.player.items[itemId] = itemnum
           })
         },
+        //修复道具数组长度
+        itemxiufu (){
+          this.save.player.items.length = 498
+        },
         //技能点全99
         dianluMax() {
           this.save.player.skillPoints.forEach((_, x) => {
@@ -440,6 +532,19 @@
         },
       },
 
+      //转换下时间
+      filters: {
+        time(time) {
+          let 时 = Math.floor(time / 3600)
+          时 = 时 < 10 ? "0" + 时 : 时
+          let 分 = Math.floor(time % 3600 / 60)
+          分 = 分 < 10 ? "0" + 分 : 分
+          let 秒 = Math.floor(time % 60)
+          秒 = 秒 < 10 ? "0" + 秒 : 秒
+
+          return `${时}:${分}:${秒}`
+        }
+      },
     }).$mount(app)
   </script>
 </body>

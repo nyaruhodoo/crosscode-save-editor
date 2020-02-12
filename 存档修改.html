@@ -492,6 +492,7 @@
 
         //修复二周目存档为空的报错
         erzhoumuerr (save){
+          if(!save.newGamePlus) return
           if (!save.newGamePlus.options){
             save.newGamePlus = {
               options: {},

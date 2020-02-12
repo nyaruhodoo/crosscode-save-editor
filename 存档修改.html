@@ -428,10 +428,16 @@
             存档 = JSON.parse(存档)
 
             //处理可能存在的多个存档
-            存档.slots = 存档.slots.map(i => this.decrypt(i))
+            存档.slots = 存档.slots.map(i => {
+              let save = this.decrypt(i)
+              this.erzhoumuerr(save)
+              return save
+            })
 
             //自动存档只有一个
             存档.autoSlot = this.decrypt(存档.autoSlot)
+            this.erzhoumuerr(存档.autoSlot)
+
 
             //研究存档时打开   
             //this.savedownload(存档)
@@ -455,6 +461,8 @@
           a.download = "cc.save"
           a.href = URL.createObjectURL(new Blob([存档], { type: 'application/json' }))
           a.click()
+
+          this.vuealert('请覆盖存档后重启游戏')
         },
         //复制存档路径到剪切板
         jianqieban() {
@@ -480,6 +488,17 @@
         eventalert(name, data, e) {
           this[name] && this[name](data)
           this.vuealert(`操作成功${e.target.textContent}`)
+        },
+
+        //修复二周目存档为空的报错
+        erzhoumuerr (save){
+          if (!save.newGamePlus.options){
+            save.newGamePlus = {
+              options: {},
+              active: false,
+              store: {}
+            }
+          }
         },
 
         

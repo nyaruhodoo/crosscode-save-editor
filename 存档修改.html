@@ -144,24 +144,24 @@
         <el-button @click="eventalert('getItem',[513,2],$event)">获取高攻专武器</el-button>
       </el-tab-pane>
 
-      <el-tab-pane label="伙伴等级" name="paatelii" class="huoban">
-        <div class="amiri">
+      <el-tab-pane label="伙伴等级" name="paatelii" class="huoban" >
+        <div class="amiri" v-if="save.party.models.Emilie">
           <img src="./img/emilie.png" height="176">
           <el-input-number v-model="save.party.models.Emilie.level" :min="1" :max="99" size="mini" :controls="false">
           </el-input-number>
         </div>
-        <div class="long">
+        <div class="long" v-if="save.party.models.Glasses">
           <img src="./img/glasses.png">
           <el-input-number v-model="save.party.models.Glasses.level" :min="1" :max="99" size="mini" :controls="false">
           </el-input-number>
         </div>
-        <div class="boluo">
+        <div class="boluo" v-if="save.party.models.Apollo">
           <img src="./img/fancyguy.png">
           <el-input-number v-model="save.party.models.Apollo.level" 
           :min="1" :max="99" size="mini" :controls="false">
           </el-input-number>
         </div>
-        <div class="qiaoen">
+        <div class="qiaoen" v-if="save.party.models.Joern">
           <img src="./img/sidekick.png" width="160" height="176">
           <el-input-number v-model="save.party.models.Joern.level" :min="1" :max="99" size="mini" :controls="false">
           </el-input-number>

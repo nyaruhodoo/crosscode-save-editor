@@ -25,6 +25,13 @@
   <div id="app" v-cloak>
     <!--上传下载,存档切换相关-->
     <div class="save">
+      <!--切换平台-->
+      <el-switch
+        v-model="isSwitch"
+        active-text="Switch"
+        inactive-text="Pc">
+      </el-switch>
+
       <!--存档操作-->
       <div class="top">
         <!--上传存档-->
@@ -288,21 +295,11 @@
         </div>
 
         <div class="helpitme">
-          <p>为什么没有宝箱地图全开功能?</p>
-          <p> 修改器用的人太少,我也懒得研究这些....</p>
-        </div>
-
-        <div class="helpitme">
           <p>为什么进入物品栏直接报错?</p>
           <p>
             出现这种原因是因为你的游戏版本过旧,添加了版本不支持的道具。
             解决办法就是使用我提供的修复功能
           </p>
-        </div>
-
-        <div class="helpitme">
-          <p>你想要的功能没有?</p>
-          <p>你可以试着联系我(乐不乐意帮你就是另一说了)....</p>
         </div>
 
       </el-tab-pane>
@@ -340,8 +337,10 @@
     document.querySelector('#audio').volume = 0.25
 
     new Vue({
-      //主要数据
+
       data: {
+        isSwitch: false,
+        
         //默认显示作者介绍
         activeName: 'psrx',
 
@@ -359,10 +358,9 @@
         itemNum: 0,
       },
 
-      //多存档切换
       computed: {
         //多存档切换
-        save() {
+        save () {
           //没上传时不处理
           if (!this.saves.autoSlot) return
 
@@ -380,12 +378,12 @@
         },
 
         //获取当前存档的道具ID范围
-        itemLength (){
+        itemLength () {
           return this.save.player.items.length - 1
         }
       },
 
-      //关键函数
+ 
       methods: {
         //存档上传
         getsave() {
@@ -408,14 +406,28 @@
             this.decryptOrEncrypt(read.result, false)
           }
         },
+
         //单个数据解密为对象
         decrypt(存档) {
-          return JSON.parse(CryptoJS.AES.decrypt(存档.slice(9), ':_.NaN0').toString(CryptoJS.enc.Utf8))
+          if (this.isSwitch) {
+            return JSON.parse(存档)
+          } else {
+            return JSON.parse(CryptoJS.AES.decrypt(存档.slice(9), ':_.NaN0').toString(CryptoJS.enc.Utf8))
+          }
+          
         },
+
         //单个数据加密为字符串
         encrypt(存档) {
-          return '[-!_0_!-]' + CryptoJS.AES.encrypt(JSON.stringify(存档), ':_.NaN0').toString()
+          if (this.isSwitch) {
+            return JSON.stringify(存档)
+          }
+          else {
+            return '[-!_0_!-]' + CryptoJS.AES.encrypt(JSON.stringify(存档), ':_.NaN0').toString()
+          }
+          
         },
+
         /*
           对整个存档进行处理,根据参数做不同的处理
           -----------------------------------------
@@ -454,6 +466,7 @@
             this.savedownload(修改过的存档)
           }
         },
+
         //下载存档到本地
         savedownload(存档) {
           存档 = JSON.stringify(存档)
@@ -464,6 +477,7 @@
 
           this.vuealert('请覆盖存档后重启游戏')
         },
+
         //复制存档路径到剪切板
         jianqieban() {
           let url = 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'
@@ -476,6 +490,7 @@
               this.vuealert(`没有复制权限,请尝试手动操作${url}`)
             })
         },
+
         //封装提示信息
         vuealert(txt) {
           const h = this.$createElement
@@ -484,6 +499,7 @@
             message: h('i', { style: 'color: teal' }, txt)
           })
         },
+
         //封装事件触发提示信息,允许传递一个参数
         eventalert(name, data, e) {
           this[name] && this[name](data)
@@ -557,7 +573,7 @@
         },
       },
 
-      //转换下时间
+
       filters: {
         time(time) {
           let 时 = Math.floor(time / 3600)
@@ -569,7 +585,8 @@
 
           return `${时}:${分}:${秒}`
         }
-      },
+      }
+
     }).$mount(app)
   </script>
 </body>

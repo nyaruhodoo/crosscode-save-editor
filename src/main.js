@@ -11,8 +11,7 @@ import {
   Input,
   Empty,
   Switch,
-  Radio,
-  Dropdown
+  Radio
 } from 'ant-design-vue'
 
 import App from './App.vue'
@@ -21,9 +20,10 @@ import 'minireset.css'
 const app = createApp(App)
 // 全局挂载提醒函数
 app.config.globalProperties.message = message
+
+// 注册组件
 app
   .use(Button)
-  .use(Dropdown)
   .use(Upload)
   .use(Tooltip)
   .use(Radio)
@@ -34,4 +34,5 @@ app
   .use(Empty)
   .use(Switch)
   .use(InputNumber)
-  .mount('#app')
+
+app.mount('#app')

@@ -1,4 +1,5 @@
 module.exports = {
   publicPath: '/crosscode-save-editor',
-  productionSourceMap: false
+  productionSourceMap: false,
+  outputDir: 'docs'
 }

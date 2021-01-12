@@ -2,23 +2,19 @@
   <div class="bg-lea"></div>
   <c-save @set-save="setSave"></c-save>
   <c-editor v-if="save" :save="save"></c-editor>
-  <c-lang></c-lang>
 </template>
 
 <script>
-  import cSave from '@/components/c-save.vue'
-  import cEditor from '@/components/c-editor.vue'
-  import cLang from '@/components/c-lang.vue'
+  import cSave from '@/components/project/c-save.vue'
+  import cEditor from '@/components/project/c-editor/c-editor.vue'
   export default {
     components: {
       cSave,
-      cEditor,
-      cLang
+      cEditor
     },
     data() {
       return {
-        save: null,
-        lang: 'zh_CN'
+        save: null
       }
     },
     methods: {
@@ -35,6 +31,7 @@
     user-select: none;
   }
 
+  // 全局滚动条样式
   ::-webkit-scrollbar {
     width: 10px;
     padding: 15px 0;
@@ -52,14 +49,9 @@
     min-height: 720px;
     background: url('~@/assets/img/bj.png') no-repeat center top;
     background-size: cover;
-    animation: yidong ease 2s infinite;
   }
 
   @keyframes lea-move {
-    from {
-      background-position: 0 0;
-    }
-
     to {
       background-position: 100% 0;
     }

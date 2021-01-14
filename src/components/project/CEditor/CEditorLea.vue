@@ -2,9 +2,9 @@
   <div class="li">
     <span>等级: </span>
     <a-input-number
-      style="width: 55px"
       id="inputNumber"
       v-model:value="player.level"
+      style="width: 55px"
       :min="1"
       :max="99"
       :precision="0"

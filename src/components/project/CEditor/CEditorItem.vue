@@ -60,18 +60,18 @@
 
   <!--自定义道具-->
   <div class="mod-item">
-    <a-button type="primary" @click="show = !show" class="mod-item-button"
+    <a-button type="primary" class="mod-item-button" @click="show = !show"
       >获取自定义道具</a-button
     >
 
     <!--道具列表-->
     <teleport to="#app">
       <transition>
-        <div class="items" v-show="show">
+        <div v-show="show" class="items">
           <div class="input-box">
             <a-input
-              style="width: auto;"
               v-model:value="search"
+              style="width: auto;"
               placeholder="查找道具"
             />
 
@@ -79,9 +79,9 @@
 
             <span>获取数量: </span>
             <a-input-number
-              style="width: 55px"
               id="inputNumber"
               v-model:value="getNumber"
+              style="width: 55px"
               :min="0"
               :max="99"
               :precision="0"
@@ -94,24 +94,24 @@
             <CloseOutlined @click="show = !show" />
           </div>
 
-          <div class="items-ul" v-if="Object.entries(itemsFilter).length">
+          <div v-if="Object.entries(itemsFilter).length" class="items-ul">
             <!--采用flex多列布局-->
             <div
-              class="items-li"
               v-for="(i, name, index) of itemsFilter"
               :key="index"
+              class="items-li"
             >
               <!--title独立出来不进行滚动-->
               <div class="item-title">{{ name }}</div>
 
               <!--列表主题出现滚动条-->
               <div class="ova">
-                <label class="item-li" v-for="(i, index) of i" :key="index">
+                <label v-for="(i, index) of i" :key="index" class="item-li">
                   <input
+                    v-model="checkeds"
                     class="input"
                     type="checkbox"
                     :value="i.index"
-                    v-model="checkeds"
                   />
                   <span>{{ i.name }}</span>
                 </label>
@@ -139,12 +139,12 @@
 
   import allItems from '@/assets/js/data1.3.0-4.json'
   import { srtingFormat } from '@/util/stringFormat.js'
-  import cUpload from '@/components/base/c-upload.vue'
+  import CUpload from '@/components/base/CUpload.vue'
 
   export default {
     props: ['items'],
 
-    components: { cUpload, CloseOutlined },
+    components: { CUpload, CloseOutlined },
 
     data() {
       return {

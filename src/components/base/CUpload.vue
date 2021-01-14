@@ -1,28 +1,24 @@
 <template>
-  <div>
-    <input
-      class="input"
-      type="file"
-      :accept="'.' + name.split('.')[1]"
-      ref="file"
-      @change="upload"
-      hidden
-    />
-    <a-button @click="inputClick">
-      <CloudUploadOutlined /> {{ title }}
-    </a-button>
+  <input
+    ref="file"
+    class="input"
+    type="file"
+    :accept="'.' + name.split('.')[1]"
+    hidden
+    @change="upload"
+  />
+  <a-button @click="inputClick"> <CloudUploadOutlined /> {{ title }} </a-button>
 
-    <a-tooltip :placement="placement">
-      <template #title>
-        <span>路径提示</span>
+  <a-tooltip :placement="placement">
+    <template #title>
+      <span>路径提示</span>
+    </template>
+    <a-button type="primary" shape="circle" @click="pathHelp">
+      <template #icon>
+        <QuestionOutlined />
       </template>
-      <a-button type="primary" shape="circle" @click="pathHelp">
-        <template #icon>
-          <QuestionOutlined />
-        </template>
-      </a-button>
-    </a-tooltip>
-  </div>
+    </a-button>
+  </a-tooltip>
 </template>
 
 <script>

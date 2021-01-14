@@ -23,18 +23,18 @@
         v-if="save.slots.length"
         class="switch-save"
         type="primary"
-        @click="saveShow = !saveShow"
+        @click="showSaves = !showSaves"
         >切换存档</a-button
       >
     </template>
   </a-tabs>
 
   <transition>
-    <div class="save-ul" v-show="saveShow">
+    <div v-show="showSaves" class="saves">
       <a-card
-        :bordered="false"
         v-for="(i, index) of saves"
         :key="index"
+        :bordered="false"
         @click="clickSave(index)"
       >
         <!--垃圾组件,不合并class只好外套个-->
@@ -57,26 +57,26 @@
 </template>
 
 <script>
-  import cEditorLea from './c-editor-lea.vue'
-  import cEditorItem from './c-editor-item.vue'
-  import cEditorHardMode from './c-editor-hard-mode.vue'
-  import cEditorFqa from './c-editor-fqa.vue'
-  import cEditorAuthor from './c-editor-author.vue'
+  import CEditorLea from './CEditorLea.vue'
+  import CEditorItem from './CEditorItem.vue'
+  import CEditorHardMode from './CEditorHardMode.vue'
+  import CEditorFqa from './CEditorFqa.vue'
+  import CEditorAuthor from './CEditorAuthor.vue'
   import { srtingFormat } from '@/util/stringFormat.js'
   import { saveCompatibility } from '@/util/saveCompatibility.js'
 
   export default {
     props: ['save'],
     components: {
-      cEditorLea,
-      cEditorItem,
-      cEditorHardMode,
-      cEditorFqa,
-      cEditorAuthor
+      CEditorLea,
+      CEditorItem,
+      CEditorHardMode,
+      CEditorFqa,
+      CEditorAuthor
     },
     data() {
       return {
-        saveShow: false,
+        showSaves: false,
 
         // 默认是自动存档
         active: 0
@@ -101,7 +101,7 @@
       },
       clickSave(index) {
         this.active = index
-        this.saveShow = false
+        this.showSaves = false
       }
     },
     computed: {
@@ -141,12 +141,13 @@
       margin-right: 10px;
     }
 
+    // 内容区左右距离
     .ant-tabs-tabpane {
       padding: 0 30px;
     }
   }
 
-  .save-ul {
+  .saves {
     position: absolute;
     left: 50%;
     top: 50%;

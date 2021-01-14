@@ -16,6 +16,7 @@ import {
 
 import App from './App.vue'
 import 'minireset.css'
+import '@/assets/scss/index.scss'
 
 const app = createApp(App)
 // 全局挂载提醒函数

@@ -161,8 +161,8 @@
       <div class="mode-ul">
         <!--技能-->
         <a-radio-group
-          class="mode-li"
           v-model:value="skillShackles"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(skillShacklesNames, $event)"
@@ -181,8 +181,8 @@
 
         <!--怪物伤害-->
         <a-radio-group
-          class="mode-li"
           v-model:value="enemyDamage"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(enemyDamageNames, $event)"
@@ -204,8 +204,8 @@
 
         <!--战斗恢复-->
         <a-radio-group
-          class="mode-li"
           v-model:value="combatRegen"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(combatRegenNames, $event)"
@@ -224,8 +224,8 @@
 
         <!--食物冷却-->
         <a-radio-group
-          class="mode-li"
           v-model:value="itemCd"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(itemCdNames, $event)"
@@ -248,8 +248,8 @@
 
         <!--掉落率-->
         <a-radio-group
-          class="mode-li"
           v-model:value="dropRate"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(dropRateNames, $event)"
@@ -268,8 +268,8 @@
 
         <!--金钱-->
         <a-radio-group
-          class="mode-li"
           v-model:value="money"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(moneyNames, $event)"
@@ -291,8 +291,8 @@
 
         <!--经验值-->
         <a-radio-group
-          class="mode-li"
           v-model:value="exp"
+          class="mode-li"
           button-style="solid"
           size="small"
           @change="radioController(expNames, $event)"

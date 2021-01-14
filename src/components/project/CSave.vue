@@ -2,19 +2,19 @@
   <div class="save">
     <c-upload
       title="存档上传"
+      placement="right"
       :name="saveName"
       :path="savePath"
-      placement="right"
       @upload="upload"
     ></c-upload>
 
     <transition>
-      <div class="download" style="margin-top: 30px;" v-if="$root.save">
+      <div v-if="save" class="download" style="margin-top: 30px;">
         <a-button @click="download">
           <CloudDownloadOutlined /> 存档下载
         </a-button>
 
-        <a-select v-model:value="pc" style="width: 89px">
+        <a-select v-model:value="saveMode" style="width: 89px">
           <a-select-opt-group label="游戏平台">
             <a-select-option value="pc">
               pc
@@ -33,25 +33,26 @@
     </transition>
   </div>
 
-  <audio loop ref="audio">
+  <audio ref="audio" loop>
     <source src="@/assets/muLea.ogg" />
   </audio>
 </template>
 
 <script>
   import { CloudDownloadOutlined } from '@ant-design/icons-vue'
-  import cUpload from '@/components/base/c-upload.vue'
+  import CUpload from '@/components/base/CUpload.vue'
   import { decryption, encryption } from '@/util/saveHandler.js'
 
   export default {
     emits: ['set-save'],
+    props: ['save'],
     components: {
-      cUpload,
+      CUpload,
       CloudDownloadOutlined
     },
     data() {
       return {
-        pc: null,
+        saveMode: null,
         saveName: 'cc.save',
         savePath: 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'
       }
@@ -61,44 +62,23 @@
     },
 
     methods: {
-      savePathHelp() {
-        const { savePath } = this
-        navigator.clipboard
-          .writeText(savePath)
-          .then(() => {
-            this.message.success('存档位置已经复制到剪切板')
-          })
-          .catch(() => {
-            this.message.error(`请手动复制存档, ${savePath}`)
-          })
-      },
-
       upload(file) {
         this.$refs.audio.play()
-        const { save, pc } = decryption(file)
-        // 弱智组件不支持布尔值,虽然不清楚是谁的锅
-        this.pc = pc ? 'pc' : 'switch'
+        const { save, mode } = decryption(file)
+        this.saveMode = mode
         this.$emit('set-save', save)
       },
 
       download() {
-        let {
-          saveName,
-          $root: { save },
-          pc
-        } = this
-        if (!save) return
-
-        // 因为不支持布尔值,必须修复这个弱智代码
-        if (pc === 'switch') pc = false
+        let { saveName, save, saveMode } = this
 
         // 研究存档用
-        if (pc === 'dev') {
+        if (saveMode === 'dev') {
           save = JSON.stringify(save.autoSlot)
         }
         // 正常模式
         else {
-          save = encryption(save, pc)
+          save = encryption(save, saveMode)
         }
 
         if (!this.a) {
@@ -117,6 +97,7 @@
 
 <style scoped lang="scss">
   .save {
+    display: inline-block;
     transform: translate(40px, 40px);
   }
 </style>

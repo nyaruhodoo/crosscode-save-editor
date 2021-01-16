@@ -335,12 +335,11 @@
         enemyDamage: false,
         // 战斗恢复
         combatRegen: false,
-        // 道具CD
-        itemCd: false,
         // 掉落率
         dropRate: false,
         exp: false,
         money: false,
+        itemCd: false,
 
         // 技能选项名
         skillShacklesNames: ['combat-arts-level-1', 'combat-arts-level-2'],

@@ -7,13 +7,14 @@
     hidden
     @change="upload"
   />
-  <a-button @click="inputClick"> <CloudUploadOutlined /> {{ title }} </a-button>
 
-  <a-tooltip :placement="placement">
+  <a-button @click="btnClick"> <CloudUploadOutlined /> {{ title }} </a-button>
+
+  <a-tooltip :placement="'right'">
     <template #title>
       <span>路径提示</span>
     </template>
-    <a-button type="primary" shape="circle" @click="pathHelp">
+    <a-button class="help-btn" type="primary" shape="circle" @click="pathHelp">
       <template #icon>
         <QuestionOutlined />
       </template>
@@ -25,11 +26,16 @@
   import { CloudUploadOutlined, QuestionOutlined } from '@ant-design/icons-vue'
   export default {
     emits: ['upload'],
-    props: ['name', 'path', 'title', 'placement'],
+    /*
+      name: 文件名 
+      path: 提示路径
+      title: 按钮内容
+    */
+    props: ['name', 'path', 'title'],
     components: { CloudUploadOutlined, QuestionOutlined },
     methods: {
       // 无法用label绑定只好转交下事件
-      inputClick() {
+      btnClick() {
         this.$refs.file.click()
       },
 
@@ -38,19 +44,19 @@
           name,
           $refs: { file: input }
         } = this
+
         const file = input.files[0]
         if (!file) return
         if (file.name !== name) {
           this.message.error(`请确认文件名是否为: ${name}`)
+          input.value = null
           return
         }
 
-        this._fileRead(file)
-
-        input.value = null
+        this._readFile(file)
       },
 
-      _fileRead(file) {
+      _readFile(file) {
         const reader = new FileReader()
         reader.readAsText(file)
         reader.onload = () => {
@@ -60,6 +66,7 @@
 
       pathHelp() {
         const { path } = this
+
         navigator.clipboard
           .writeText(path)
           .then(() => {
@@ -74,7 +81,7 @@
 </script>
 
 <style scoped lang="scss">
-  .ant-btn {
-    margin-right: 10px;
+  .help-btn {
+    margin: 10px;
   }
 </style>

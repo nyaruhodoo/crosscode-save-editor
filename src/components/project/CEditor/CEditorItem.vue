@@ -2,11 +2,17 @@
   <!--便捷功能-->
   <div class="buts">
     <a-button type="primary" @click="getAllItems">获取全道具</a-button>
-    <a-button type="primary" @click="clearAllItems">清空道具</a-button>
+
+    <a-tooltip placement="right">
+      <template #title>
+        <span>可以修复报错问题</span>
+      </template>
+      <a-button type="primary" @click="clearAllItems">清空道具</a-button>
+    </a-tooltip>
 
     <br />
 
-    <a-button type="primary" @click="_getItems([63, 496], 99)"
+    <a-button type="primary" @click="getItems([63, 496], 99)"
       >获取食物</a-button
     >
 
@@ -14,7 +20,7 @@
     <a-button
       type="primary"
       @click="
-        _getItems(
+        getItems(
           [
             16,
             101,
@@ -33,44 +39,43 @@
       >获取时装</a-button
     >
 
-    <a-button type="primary" @click="_getItems([247], 1)">获取跑鞋</a-button>
+    <a-button type="primary" @click="getItems([247])">获取跑鞋</a-button>
 
-    <a-button
-      type="primary"
-      @click="_getItems(['568-599', '601-605', 607, 611], 1)"
+    <a-button type="primary" @click="getItems(['568-599', '601-605', 607, 611])"
       >获取成长武器</a-button
     >
 
     <br />
 
-    <a-button type="primary" @click="_getItems([501], 1)"
-      >获取宝箱搜索器</a-button
-    >
+    <a-button type="primary" @click="getItems([501])">获取宝箱搜索器</a-button>
 
-    <a-button type="primary" @click="_getItems(['154-156'], 1)"
+    <a-button type="primary" @click="getItems(['154-156'])"
       >获取宝箱钥匙</a-button
     >
 
     <br />
 
-    <a-button type="primary" @click="_getItems(['448-453', 618], 1)"
+    <a-button type="primary" @click="getItems(['448-453', 618])"
       >获取地区强化剂</a-button
     >
   </div>
 
   <!--自定义道具-->
   <div class="mod-item">
-    <a-button type="primary" class="mod-item-button" @click="show = !show"
+    <a-button
+      type="primary"
+      class="mod-item-button"
+      @click="showAllitems = !showAllitems"
       >获取自定义道具</a-button
     >
 
     <!--道具列表-->
     <teleport to="#app">
       <transition>
-        <div v-show="show" class="items">
+        <div v-show="showAllitems" class="items">
           <div class="input-box">
             <a-input
-              v-model:value="search"
+              v-model:value="searchValue"
               style="width: auto;"
               placeholder="查找道具"
             />
@@ -91,7 +96,7 @@
               >{{ getNumber ? '获取' : '删除' }}选中道具</a-button
             >
 
-            <CloseOutlined @click="show = !show" />
+            <CloseOutlined @click="showAllitems = !showAllitems" />
           </div>
 
           <div v-if="Object.entries(itemsFilter).length" class="items-ul">
@@ -122,16 +127,15 @@
         </div>
       </transition>
     </teleport>
-  </div>
 
-  <c-upload
-    class="upload"
-    title="道具表上传"
-    placement="top"
-    :name="name"
-    :path="itemsPath"
-    @upload="upload"
-  ></c-upload>
+    <c-upload
+      class="upload"
+      title="本地数据库上传"
+      :name="name"
+      :path="itemsPath"
+      @upload="upload"
+    ></c-upload>
+  </div>
 </template>
 
 <script>
@@ -149,8 +153,8 @@
     data() {
       return {
         allItems: Object.freeze(allItems),
-        show: false,
-        search: '',
+        showAllitems: false,
+        searchValue: '',
         checkeds: [],
         getNumber: 1,
 
@@ -170,35 +174,38 @@
         // 不要作弊狗
         items[157] = null
       },
-      clearAllItems() {
-        this.items.length = 0
-      },
-      _getItems(itemsId, num) {
-        // 可传递字符串获取范围道具
+      getItems(itemsId, num = 1) {
+        const { items } = this
+
+        // 删除道具的情况
+        if (num) num = null
+
         itemsId.forEach((i) => {
           if (typeof i === 'string') {
             let [min, max] = i.split('-')
             min = +min
             max = +max
             for (let index = min; index <= max; index++) {
-              this.items[index] = num
+              items[index] = num
             }
           } else {
-            this.items[i] = num
+            items[i] = num
           }
         })
       },
       getCheckedItems() {
-        const { checkeds, getNumber, items } = this
+        const { checkeds, getNumber, getItems } = this
         if (!checkeds.length) {
           this.message.error('当前没有选中的道具')
           return
         }
-        checkeds.forEach((i) => {
-          items[i] = getNumber || null
-        })
-        this.checkeds.length = 0
+
+        getItems(checkeds, getNumber)
         this.message.success('批量添加道具完成')
+        this.checkeds.length = 0
+      },
+      clearAllItems() {
+        this.items.length = 0
       },
 
       // 修复输入框的BUG
@@ -226,12 +233,13 @@
 
         return rtn
       },
+
       itemsFilter() {
-        const { itemsFormat, search } = this
+        const { itemsFormat, searchValue } = this
         const rtn = {}
 
         for (const [key, value] of Object.entries(itemsFormat)) {
-          const filterArr = value.filter((i) => i.name.includes(search))
+          const filterArr = value.filter((i) => i.name.includes(searchValue))
           if (filterArr.length) rtn[key] = filterArr
         }
 
@@ -244,13 +252,6 @@
 <style scoped lang="scss">
   .ant-btn {
     margin: 0 15px 15px 0;
-  }
-
-  .upload {
-    direction: rtl;
-    position: absolute;
-    right: 0;
-    bottom: 10px;
   }
 
   .items {

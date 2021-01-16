@@ -1,5 +1,5 @@
 <template>
-  <a-tabs :animated="false">
+  <a-tabs :animated="false" :tabBarGutter="0">
     <a-tab-pane key="1" tab="主人翁">
       <c-editor-lea :player="activeSave.player"></c-editor-lea>
     </a-tab-pane>
@@ -67,6 +67,7 @@
 
   export default {
     props: ['save'],
+
     components: {
       CEditorLea,
       CEditorItem,
@@ -74,21 +75,25 @@
       CEditorFqa,
       CEditorAuthor
     },
+
     data() {
       return {
         showSaves: false,
 
-        // 默认是自动存档
+        // 默认
         active: 0
       }
     },
+
     methods: {
       numberFormat(number) {
         return number.toString().padStart(2, '0')
       },
+
       mapFormat(map1, map2) {
         return `${srtingFormat(map1.zh_CN)} - ${srtingFormat(map2.zh_CN)}`
       },
+
       timeFormat(time) {
         const _ = Number.parseInt
         const { numberFormat } = this
@@ -99,11 +104,13 @@
           ${numberFormat(_(time % 60))}
         `
       },
+
       clickSave(index) {
         this.active = index
         this.showSaves = false
       }
     },
+
     computed: {
       saves() {
         const { save } = this
@@ -111,6 +118,7 @@
 
         return ret
       },
+
       activeSave() {
         const { save, active } = this
         const ret = active ? save.slots[active - 1] : save.autoSlot
@@ -126,14 +134,14 @@
 
 <style scoped lang="scss">
   .ant-tabs {
-    width: 600px;
+    width: 640px;
     height: 400px;
     background-color: rgba($color: #fff, $alpha: 0.8);
     border-radius: 10px;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -45%);
 
     // 切换存档按钮
     .switch-save {
@@ -142,7 +150,7 @@
     }
 
     // 内容区左右距离
-    .ant-tabs-tabpane {
+    ::v-deep .ant-tabs-top-content {
       padding: 0 30px;
     }
   }

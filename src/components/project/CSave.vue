@@ -2,14 +2,13 @@
   <div class="save">
     <c-upload
       title="存档上传"
-      placement="right"
       :name="saveName"
       :path="savePath"
       @upload="upload"
     ></c-upload>
 
     <transition>
-      <div v-if="save" class="download" style="margin-top: 30px;">
+      <div v-if="save" class="download">
         <a-button @click="download">
           <CloudDownloadOutlined /> 存档下载
         </a-button>
@@ -33,6 +32,7 @@
     </transition>
   </div>
 
+  <!--使用source的原因是因为vue编译时不会处理audio标签的路径-->
   <audio ref="audio" loop>
     <source src="@/assets/muLea.ogg" />
   </audio>
@@ -46,19 +46,21 @@
   export default {
     emits: ['set-save'],
     props: ['save'],
+    mounted() {
+      this.$refs.audio.volume = 0.2
+    },
+
     components: {
       CUpload,
       CloudDownloadOutlined
     },
+
     data() {
       return {
         saveMode: null,
         saveName: 'cc.save',
         savePath: 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'
       }
-    },
-    mounted() {
-      this.$refs.audio.volume = 0.2
     },
 
     methods: {
@@ -99,5 +101,8 @@
   .save {
     display: inline-block;
     transform: translate(40px, 40px);
+  }
+  .download {
+    margin-top: 30px;
   }
 </style>

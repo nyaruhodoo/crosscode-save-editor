@@ -1,8 +1,9 @@
 <template>
   <div class="ico">
-    <a href="https://aadach1.github.io/crosscode-save-editor/">
+    <a href="https://github.com/psrx/crosscode-save-editor">
       <GithubOutlined
     /></a>
+    <p>求Star!</p>
   </div>
 
   <div class="sponsor">
@@ -22,13 +23,16 @@
 </script>
 
 <style scoped lang="scss">
+  .anticon-github.anticon-github {
+    margin-right: 0;
+    margin-top: 20px;
+  }
   .ico {
     text-align: center;
   }
   .anticon {
     font-size: 50px;
     transition: 0.25s;
-    margin-right: 30px;
 
     &:hover {
       color: rgb(26, 98, 194);
@@ -37,7 +41,7 @@
 
   .sponsor {
     font-size: 30px;
-    margin-top: 30px;
+    margin-top: 15px;
     text-align: center;
     img {
       width: 300px;

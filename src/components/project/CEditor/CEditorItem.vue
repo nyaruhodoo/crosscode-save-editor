@@ -140,7 +140,6 @@
 
 <script>
   import { CloseOutlined } from '@ant-design/icons-vue'
-
   import allItems from '@/assets/js/data1.3.0-4.json'
   import { srtingFormat } from '@/util/stringFormat.js'
   import CUpload from '@/components/base/CUpload.vue'
@@ -178,7 +177,7 @@
         const { items } = this
 
         // 删除道具的情况
-        if (num) num = null
+        if (!num) num = null
 
         itemsId.forEach((i) => {
           if (typeof i === 'string') {
@@ -189,8 +188,11 @@
               items[index] = num
             }
           } else {
+            console.log(num)
             items[i] = num
           }
+
+          console.log(...items)
         })
       },
       getCheckedItems() {

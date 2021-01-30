@@ -11,7 +11,8 @@ import {
   Input,
   Empty,
   Switch,
-  Radio
+  Radio,
+  Table
 } from 'ant-design-vue'
 
 import App from './App.vue'
@@ -25,6 +26,7 @@ app.config.globalProperties.message = message
 app
   .use(Button)
   .use(Upload)
+  .use(Table)
   .use(Tooltip)
   .use(Radio)
   .use(Select)

@@ -34,27 +34,23 @@
   <!--存档列表-->
   <transition>
     <div v-if="save.slots.length" v-show="showSaves" class="saves">
-      <a-card
+      <div
         v-for="(i, index) of saves"
         :key="index"
+        :class="{ 'active-save': activeIndex === index }"
+        class="save"
         :bordered="false"
         @click="switchSave(index)"
       >
-        <!--垃圾组件,不合并class只好外套个-->
-        <div :class="{ active: active === index }">
-          <div class="number">
-            存档编号: {{ !index ? 'auto' : numberFormat(index) }}
-          </div>
-          <div class="chapter">
-            剧情章节: {{ numberFormat(i.player.chapter + 1) }}
-          </div>
-          <div class="map">所在地图: {{ mapFormat(i.area, i.specialMap) }}</div>
-
-          <div class="play-time">游玩时间: {{ timeFormat(i.playtime) }}</div>
-          <div class="level">角色等级: {{ i.player.level }}</div>
-          <div class="credit">信用点: {{ i.player.credit }}</div>
+        <div class="save-number">
+          {{ !index ? 'auto' : numberFormat(index) }}
         </div>
-      </a-card>
+        <div>游玩时间: {{ timeFormat(i.playtime) }}</div>
+        <div>角色等级: {{ i.player.level }}</div>
+        <div>信用点: {{ i.player.credit }}</div>
+        <div>所在地图: {{ mapFormat(i.area, i.specialMap) }}</div>
+        <div>剧情章节: {{ numberFormat(i.player.chapter + 1) }}</div>
+      </div>
     </div>
   </transition>
 </template>
@@ -67,8 +63,6 @@
   import CEditorAuthor from './CEditorAuthor.vue'
   import saveFix from '@/util/saveFix.js'
   import { srtingFormat } from '@/util/stringFormat.js'
-
-  console.log(saveFix)
 
   export default {
     props: ['save'],
@@ -95,16 +89,13 @@
         this.activeIndex = index
         this.showSaves = false
       },
+
       numberFormat(number) {
         return number.toString().padStart(2, '0')
       },
-
       mapFormat(map1, map2) {
-        return `${srtingFormat(map1.zh_CN)} ${map2 ? '-' : ''} ${srtingFormat(
-          map2.zh_CN
-        )}`
+        return `${srtingFormat(map1.zh_CN)} ${srtingFormat(map2.zh_CN)}`
       },
-
       timeFormat(time) {
         const _ = Number.parseInt
         const { numberFormat } = this
@@ -169,23 +160,33 @@
     transform: translate(-50%, -60%);
     width: 300px;
     height: 380px;
-    padding: 15px;
     background-color: #fff;
     border: 1px solid;
     border-radius: 5px;
     overflow: auto;
+    text-align: center;
+    padding: 10px;
 
-    .ant-card {
+    .save {
+      transition: 0.25s;
+
+      & ~ .save {
+        margin-top: 15px;
+      }
+
       &:hover {
         color: rgba(24, 95, 189, 0.5);
       }
-      & ~ .ant-card {
-        border-top: 1px solid;
-      }
-    }
 
-    .active {
-      color: rgb(0, 108, 250);
+      &.active-save {
+        color: rgb(0, 108, 250);
+      }
+
+      .save-number {
+        text-align: right;
+        font-weight: 700;
+        font-size: 17px;
+      }
     }
   }
 </style>

@@ -129,8 +129,7 @@
     </teleport>
 
     <c-upload
-      class="upload"
-      title="本地数据库上传"
+      title="道具表上传"
       :name="name"
       :path="itemsPath"
       @upload="upload"
@@ -222,6 +221,7 @@
     },
 
     computed: {
+      // 道具分类
       itemsFormat() {
         const rtn = {}
         this.allItems.forEach(({ name, type }, index) => {
@@ -236,6 +236,7 @@
         return rtn
       },
 
+      // 筛选道具
       itemsFilter() {
         const { itemsFormat, searchValue } = this
         const rtn = {}

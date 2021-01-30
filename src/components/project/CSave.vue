@@ -1,9 +1,13 @@
+<!--
+ * @Description: 用于管理存档的上传与下载
+ * @LastEditTime: 2021-01-30 15:38:30
+-->
 <template>
   <div class="save">
     <c-upload
       title="存档上传"
-      :name="saveName"
-      :path="savePath"
+      :name="fileName"
+      :path="'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'"
       @upload="upload"
     ></c-upload>
 
@@ -31,24 +35,16 @@
       </div>
     </transition>
   </div>
-
-  <!--使用source的原因是因为vue编译时不会处理audio标签的路径-->
-  <audio ref="audio" loop>
-    <source src="@/assets/muLea.ogg" />
-  </audio>
 </template>
 
 <script>
-  import { CloudDownloadOutlined } from '@ant-design/icons-vue'
   import CUpload from '@/components/base/CUpload.vue'
-  import { decryption, encryption } from '@/util/saveHandler.js'
+  import { CloudDownloadOutlined } from '@ant-design/icons-vue'
+  import { saveDecryption, saveEncryption } from '@/util/saveHandler.js'
 
   export default {
     emits: ['set-save'],
     props: ['save'],
-    mounted() {
-      this.$refs.audio.volume = 0.2
-    },
 
     components: {
       CUpload,
@@ -58,21 +54,19 @@
     data() {
       return {
         saveMode: null,
-        saveName: 'cc.save',
-        savePath: 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'
+        fileName: 'cc.save'
       }
     },
 
     methods: {
       upload(file) {
-        this.$refs.audio.play()
-        const { save, mode } = decryption(file)
+        const { save, mode } = saveDecryption(file)
         this.saveMode = mode
         this.$emit('set-save', save)
       },
 
       download() {
-        let { saveName, save, saveMode } = this
+        let { fileName, save, saveMode } = this
 
         // 研究存档用
         if (saveMode === 'dev') {
@@ -80,12 +74,12 @@
         }
         // 正常模式
         else {
-          save = encryption(save, saveMode)
+          save = saveEncryption(save, saveMode)
         }
 
         if (!this.a) {
           this.a = document.createElement('a')
-          this.a.download = saveName
+          this.a.download = fileName
         }
         this.a.href = URL.createObjectURL(
           new Blob([save], { type: 'application/json' })

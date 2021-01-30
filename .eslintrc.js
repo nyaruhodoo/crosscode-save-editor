@@ -12,13 +12,12 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    'vue/attributes-order': 'warn',
-    'vue/component-tags-order': 'warn',
-    'vue/no-multiple-template-root': 'off',
-    'vue/no-v-model-argument': 'off',
+    'vue/attributes-order': 'error',
+    'vue/component-tags-order': 'error',
 
-    // 为了方便就不遵循单向数据流了
-    'vue/no-mutating-props': 'off'
+    // vue3与2的不兼容规则
+    'vue/no-multiple-template-root': 'off',
+    'vue/no-v-model-argument': 'off'
   },
 
   extends: ['plugin:vue/essential', '@vue/standard', 'prettier']

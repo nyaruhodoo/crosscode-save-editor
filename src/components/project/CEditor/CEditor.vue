@@ -1,4 +1,5 @@
 <template>
+  <!--编辑器-->
   <a-tabs :animated="false" :tabBarGutter="0">
     <a-tab-pane key="1" tab="主人翁">
       <c-editor-lea :player="activeSave.player"></c-editor-lea>
@@ -18,6 +19,7 @@
       <c-editor-author></c-editor-author>
     </a-tab-pane>
 
+    <!--切换存档按钮-->
     <template #tabBarExtraContent>
       <a-button
         v-if="save.slots.length"
@@ -29,13 +31,14 @@
     </template>
   </a-tabs>
 
+  <!--存档列表-->
   <transition>
-    <div v-show="showSaves" class="saves">
+    <div v-if="save.slots.length" v-show="showSaves" class="saves">
       <a-card
         v-for="(i, index) of saves"
         :key="index"
         :bordered="false"
-        @click="clickSave(index)"
+        @click="switchSave(index)"
       >
         <!--垃圾组件,不合并class只好外套个-->
         <div :class="{ active: active === index }">
@@ -62,8 +65,10 @@
   import CEditorHardMode from './CEditorHardMode.vue'
   import CEditorFqa from './CEditorFqa.vue'
   import CEditorAuthor from './CEditorAuthor.vue'
+  import saveFix from '@/util/saveFix.js'
   import { srtingFormat } from '@/util/stringFormat.js'
-  import { saveCompatibility } from '@/util/saveCompatibility.js'
+
+  console.log(saveFix)
 
   export default {
     props: ['save'],
@@ -80,18 +85,24 @@
       return {
         showSaves: false,
 
-        // 默认
-        active: 0
+        // 默认是auto存档
+        activeIndex: 0
       }
     },
 
     methods: {
+      switchSave(index) {
+        this.activeIndex = index
+        this.showSaves = false
+      },
       numberFormat(number) {
         return number.toString().padStart(2, '0')
       },
 
       mapFormat(map1, map2) {
-        return `${srtingFormat(map1.zh_CN)} - ${srtingFormat(map2.zh_CN)}`
+        return `${srtingFormat(map1.zh_CN)} ${map2 ? '-' : ''} ${srtingFormat(
+          map2.zh_CN
+        )}`
       },
 
       timeFormat(time) {
@@ -103,28 +114,24 @@
           ${numberFormat(_(time / 60) % 60)} :
           ${numberFormat(_(time % 60))}
         `
-      },
-
-      clickSave(index) {
-        this.active = index
-        this.showSaves = false
       }
     },
 
     computed: {
+      // 方便遍历把存档组合为一个数组
       saves() {
-        const { save } = this
-        const ret = [save.autoSlot, ...save.slots]
-
-        return ret
+        const {
+          save: { autoSlot, slots }
+        } = this
+        return [autoSlot, ...slots]
       },
 
       activeSave() {
-        const { save, active } = this
-        const ret = active ? save.slots[active - 1] : save.autoSlot
+        const { save, activeIndex } = this
+        const ret = activeIndex ? save.slots[activeIndex - 1] : save.autoSlot
 
         // 处理兼容性问题
-        saveCompatibility(ret)
+        saveFix(ret)
 
         return ret
       }

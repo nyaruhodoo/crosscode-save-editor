@@ -1,14 +1,20 @@
+<!--
+ * @Description: 文件上传组件
+ * @param {String} name: 要求的文件名
+ * @param {String} path: 提示路径
+ * @param {String} title: 按钮文字
+ * @LastEditTime: 2021-01-30 15:22:53
+-->
 <template>
   <input
-    ref="file"
-    class="input"
+    ref="fileInput"
     type="file"
-    :accept="'.' + name.split('.')[1]"
     hidden
+    :accept="'.' + name.split('.')[1]"
     @change="upload"
   />
 
-  <a-button @click="btnClick"> <CloudUploadOutlined /> {{ title }} </a-button>
+  <a-button @click="toInput"> <CloudUploadOutlined /> {{ title }} </a-button>
 
   <a-tooltip :placement="'right'">
     <template #title>
@@ -26,34 +32,40 @@
   import { CloudUploadOutlined, QuestionOutlined } from '@ant-design/icons-vue'
   export default {
     emits: ['upload'],
-    /*
-      name: 文件名 
-      path: 提示路径
-      title: 按钮内容
-    */
     props: ['name', 'path', 'title'],
     components: { CloudUploadOutlined, QuestionOutlined },
     methods: {
       // 无法用label绑定只好转交下事件
-      btnClick() {
-        this.$refs.file.click()
+      toInput() {
+        this.$refs.fileInput.click()
       },
 
       upload() {
         const {
           name,
-          $refs: { file: input }
+          $refs: { fileInput }
         } = this
 
-        const file = input.files[0]
+        const file = fileInput.files[0]
         if (!file) return
         if (file.name !== name) {
           this.message.error(`请确认文件名是否为: ${name}`)
-          input.value = null
+          fileInput.value = null
           return
         }
 
         this._readFile(file)
+      },
+
+      async pathHelp() {
+        const { path } = this
+
+        try {
+          await navigator.clipboard.writeText(path)
+          this.message.success('路径位置已经复制到剪切板')
+        } catch (error) {
+          this.message.error(`请手动复制路径, ${path}`)
+        }
       },
 
       _readFile(file) {
@@ -62,19 +74,6 @@
         reader.onload = () => {
           this.$emit('upload', reader.result)
         }
-      },
-
-      pathHelp() {
-        const { path } = this
-
-        navigator.clipboard
-          .writeText(path)
-          .then(() => {
-            this.message.success('路径位置已经复制到剪切板')
-          })
-          .catch(() => {
-            this.message.error(`请手动复制路径, ${path}`)
-          })
       }
     }
   }

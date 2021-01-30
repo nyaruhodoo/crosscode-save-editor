@@ -1,5 +1,10 @@
 <template>
   <div class="bg-lea"></div>
+  <!--使用source的原因是因为vue编译时不会处理audio标签的路径,你是要坑死我?-->
+  <audio ref="audio" loop>
+    <source src="@/assets/muLea.ogg" />
+  </audio>
+
   <c-save :save="save" @set-save="setSave"></c-save>
   <c-editor v-if="save" :save="save"></c-editor>
 </template>
@@ -22,7 +27,13 @@
 
     methods: {
       setSave(save) {
+        const {
+          $refs: { audio }
+        } = this
         this.save = save
+
+        audio.play()
+        audio.volume = 0.2
       }
     }
   }
@@ -33,6 +44,8 @@
     cursor: url('~@/assets/img/cursor.png'), auto;
     user-select: none;
   }
+
+  // 全局滚动条样式
   ::-webkit-scrollbar {
     width: 10px;
     padding: 15px 0;
@@ -40,6 +53,16 @@
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 6px;
+  }
+
+  // 全局动画
+  .v-enter-from,
+  .v-leave-to {
+    opacity: 0;
+  }
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity 0.25s ease;
   }
 
   #app {
@@ -67,15 +90,5 @@
     right: 1%;
     bottom: 0;
     animation: lea-move steps(5) 0.75s infinite;
-  }
-
-  // 全局动画
-  .v-enter-from,
-  .v-leave-to {
-    opacity: 0;
-  }
-  .v-enter-active,
-  .v-leave-active {
-    transition: opacity 0.25s ease;
   }
 </style>

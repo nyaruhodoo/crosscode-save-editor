@@ -3,37 +3,54 @@
  * @param {String} name: 要求的文件名
  * @param {String} path: 提示路径
  * @param {String} title: 按钮文字
- * @LastEditTime: 2021-01-30 15:22:53
+ * @LastEditTime: 2021-02-19 00:47:14
 -->
 <template>
-  <input
-    ref="fileInput"
-    type="file"
-    hidden
-    :accept="'.' + name.split('.')[1]"
-    @change="upload"
-  />
+  <div class="file-upload">
+    <input
+      ref="fileInput"
+      type="file"
+      hidden
+      :accept="'.' + name.split('.')[1]"
+      @change="upload"
+    />
 
-  <a-button @click="toInput"> <CloudUploadOutlined /> {{ title }} </a-button>
+    <a-button @click="toInput"> <CloudUploadOutlined /> {{ title }} </a-button>
 
-  <a-tooltip :placement="'right'">
-    <template #title>
-      <span>路径提示</span>
-    </template>
-    <a-button class="help-btn" type="primary" shape="circle" @click="pathHelp">
-      <template #icon>
-        <QuestionOutlined />
+    <a-tooltip :placement="'right'">
+      <template #title>
+        <span>路径提示</span>
       </template>
-    </a-button>
-  </a-tooltip>
+      <a-button
+        class="help-btn"
+        type="primary"
+        shape="circle"
+        @click="pathHelp"
+      >
+        <template #icon>
+          <QuestionOutlined />
+        </template>
+      </a-button>
+    </a-tooltip>
+  </div>
 </template>
 
 <script>
   import { CloudUploadOutlined, QuestionOutlined } from '@ant-design/icons-vue'
   export default {
-    emits: ['upload'],
-    props: ['name', 'path', 'title'],
     components: { CloudUploadOutlined, QuestionOutlined },
+    props: {
+      name: {
+        type: String,
+      },
+      path: {
+        type: String,
+      },
+      title: {
+        type: String,
+      },
+    },
+    emits: ['upload'],
     methods: {
       // 无法用label绑定只好转交下事件
       toInput() {
@@ -43,7 +60,7 @@
       upload() {
         const {
           name,
-          $refs: { fileInput }
+          $refs: { fileInput },
         } = this
 
         const file = fileInput.files[0]
@@ -74,12 +91,16 @@
         reader.onload = () => {
           this.$emit('upload', reader.result)
         }
-      }
-    }
+      },
+    },
   }
 </script>
 
 <style scoped lang="scss">
+  .file-upload {
+    display: inline-block;
+  }
+
   .help-btn {
     margin: 10px;
   }

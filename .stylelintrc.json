@@ -1,0 +1,36 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-idiomatic-order"],
+  "plugins": [
+    "stylelint-no-unsupported-browser-features",
+    "stylelint-high-performance-animation",
+    "stylelint-declaration-block-no-ignored-properties",
+    "stylelint-group-selectors",
+    "stylelint-no-unused-selectors",
+    "stylelint-selector-no-empty",
+    "stylelint-suitcss",
+    "stylelint-z-index-value-constraint"
+  ],
+  "rules": {
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "browsers": ["> 2%", "Last 2 versions"],
+        "ignorePartialSupport": true
+      }
+    ],
+    "plugin/no-low-performance-animation-properties": true,
+    "plugin/declaration-block-no-ignored-properties": true,
+    "plugin/stylelint-group-selectors": true,
+    "plugin/no-unused-selectors": true,
+    "plugin/stylelint-selector-no-empty": true,
+    "suitcss/custom-property-no-outside-root": true,
+    "suitcss/root-no-standard-properties": true,
+    "suitcss/selector-root-no-composition": true,
+    "plugin/z-index-value-constraint": {
+      "min": 1,
+      "max": 10
+    },
+
+    "declaration-colon-newline-after": null
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <!--便捷功能-->
-  <div class="buts">
+  <div>
     <a-button type="primary" @click="getAllItems">获取全道具</a-button>
 
     <a-tooltip placement="right">
@@ -31,7 +31,7 @@
             534,
             '537-539',
             '546-549',
-            '552-559'
+            '552-559',
           ],
           1
         )
@@ -69,24 +69,33 @@
       >获取自定义道具</a-button
     >
 
+    <c-upload
+      title="道具表上传"
+      :name="jsonName"
+      :path="itemsPath"
+      @upload="upload"
+    ></c-upload>
+
     <!--道具列表-->
     <teleport to="#app">
       <transition>
         <div v-show="showAllitems" class="items">
-          <div class="input-box">
+          <div>
             <a-input
               v-model:value="searchValue"
               style="width: auto;"
               placeholder="查找道具"
             />
 
-            <span style="margin: 0 10px;">当前已选中{{ checkeds.length }}</span>
+            <span style="margin: 0 10px;"
+              >当前已选中{{ itemCheckeds.length }}</span
+            >
 
-            <span>获取数量: </span>
+            <span>数量:</span>
             <a-input-number
               id="inputNumber"
               v-model:value="getNumber"
-              style="width: 55px"
+              style="width: 55px;"
               :min="0"
               :max="99"
               :precision="0"
@@ -100,65 +109,95 @@
           </div>
 
           <div v-if="Object.entries(itemsFilter).length" class="items-ul">
-            <!--采用flex多列布局-->
             <div
-              v-for="(i, name, index) of itemsFilter"
-              :key="index"
+              v-for="(itemsUl, itemsType, itemsIndex) of itemsFilter"
+              :key="itemsIndex"
               class="items-li"
             >
               <!--title独立出来不进行滚动-->
-              <div class="item-title">{{ name }}</div>
+              <div class="item-title">{{ itemsType }}</div>
 
               <!--列表主题出现滚动条-->
               <div class="ova">
-                <label v-for="(i, index) of i" :key="index" class="item-li">
+                <label
+                  v-for="(item, itemIndex) of itemsUl"
+                  :key="itemIndex"
+                  class="item-li"
+                >
                   <input
-                    v-model="checkeds"
+                    v-model="itemCheckeds"
                     class="input"
                     type="checkbox"
-                    :value="i.index"
+                    :value="item.index"
                   />
-                  <span>{{ i.name }}</span>
+                  <span>{{ item.name }}</span>
                 </label>
               </div>
             </div>
           </div>
+
           <a-empty v-else />
         </div>
       </transition>
     </teleport>
-
-    <c-upload
-      title="道具表上传"
-      :name="name"
-      :path="itemsPath"
-      @upload="upload"
-    ></c-upload>
   </div>
 </template>
 
 <script>
   import { CloseOutlined } from '@ant-design/icons-vue'
+  import CUpload from '@/components/base/CUpload.vue'
   import allItems from '@/assets/js/data1.3.0-4.json'
   import { srtingFormat } from '@/util/stringFormat.js'
-  import CUpload from '@/components/base/CUpload.vue'
 
   export default {
-    props: ['items'],
-
     components: { CUpload, CloseOutlined },
+    props: {
+      items: {
+        type: Object,
+      },
+    },
 
     data() {
       return {
         allItems: Object.freeze(allItems),
         showAllitems: false,
         searchValue: '',
-        checkeds: [],
+        itemCheckeds: [],
         getNumber: 1,
 
-        name: 'item-database.json',
-        itemsPath: 'CrossCode\\assets\\data'
+        jsonName: 'item-database.json',
+        itemsPath: 'CrossCode\\assets\\data',
       }
+    },
+
+    computed: {
+      // 道具分类
+      itemsFormat() {
+        const rtn = {}
+        this.allItems.forEach(({ name, type }, index) => {
+          if (!rtn[type]) rtn[type] = []
+
+          rtn[type].push({
+            name: srtingFormat(name.zh_CN),
+            index,
+          })
+        })
+
+        return rtn
+      },
+
+      // 筛选道具
+      itemsFilter() {
+        const { itemsFormat, searchValue } = this
+        const rtn = {}
+
+        for (const [key, value] of Object.entries(itemsFormat)) {
+          const filterArr = value.filter((i) => i.name.includes(searchValue))
+          if (filterArr.length) rtn[key] = filterArr
+        }
+
+        return rtn
+      },
     },
 
     methods: {
@@ -190,20 +229,18 @@
             console.log(num)
             items[i] = num
           }
-
-          console.log(...items)
         })
       },
       getCheckedItems() {
-        const { checkeds, getNumber, getItems } = this
-        if (!checkeds.length) {
+        const { itemCheckeds, getNumber, getItems } = this
+        if (!itemCheckeds.length) {
           this.message.error('当前没有选中的道具')
           return
         }
 
-        getItems(checkeds, getNumber)
+        getItems(itemCheckeds, getNumber)
         this.message.success('批量添加道具完成')
-        this.checkeds.length = 0
+        this.itemCheckeds.length = 0
       },
       clearAllItems() {
         this.items.length = 0
@@ -216,39 +253,9 @@
 
       upload(file) {
         this.allItems = Object.freeze(JSON.parse(file).items)
-        this.checkeds.length = 0
-      }
-    },
-
-    computed: {
-      // 道具分类
-      itemsFormat() {
-        const rtn = {}
-        this.allItems.forEach(({ name, type }, index) => {
-          if (!rtn[type]) rtn[type] = []
-
-          rtn[type].push({
-            name: srtingFormat(name.zh_CN),
-            index
-          })
-        })
-
-        return rtn
+        this.itemCheckeds.length = 0
       },
-
-      // 筛选道具
-      itemsFilter() {
-        const { itemsFormat, searchValue } = this
-        const rtn = {}
-
-        for (const [key, value] of Object.entries(itemsFormat)) {
-          const filterArr = value.filter((i) => i.name.includes(searchValue))
-          if (filterArr.length) rtn[key] = filterArr
-        }
-
-        return rtn
-      }
-    }
+    },
   }
 </script>
 
@@ -258,21 +265,21 @@
   }
 
   .items {
-    min-width: 630px;
-    position: absolute;
-    left: 50%;
+    position: fixed;
     top: 50%;
-    transform: translate(-50%, -55%);
-    background-color: #fff;
-    border: 1px solid;
-    border-radius: 5px;
+    left: 50%;
+    min-width: 630px;
     padding: 10px;
+    border: 1px solid;
+    background-color: #fff;
+    border-radius: 5px;
+    transform: translate(-50%, -55%);
 
     .anticon-close {
-      font-size: 30px;
       position: absolute;
       top: 15px;
       right: 35px;
+      font-size: 30px;
 
       &:hover {
         color: #f5222d;
@@ -288,8 +295,8 @@
         margin: 0 10px;
 
         .item-title {
-          font-weight: 700;
           color: #f5222d;
+          font-weight: 700;
         }
 
         // 滚动条单独存在于每列
@@ -299,13 +306,14 @@
 
           .item-li {
             display: block;
-            white-space: nowrap;
             margin-top: 5px;
             margin-right: 5px;
             transition: all 0.25s;
+            white-space: nowrap;
 
             .input {
               margin-right: 5px;
+
               &:checked + span {
                 color: rgb(25, 212, 81);
               }

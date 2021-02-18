@@ -1,5 +1,5 @@
 <template>
-  <div class="ico">
+  <div class="gayhub">
     <a href="https://github.com/psrx/crosscode-save-editor">
       <GithubOutlined
     /></a>
@@ -17,32 +17,32 @@
 
   export default {
     components: {
-      GithubOutlined
-    }
+      GithubOutlined,
+    },
   }
 </script>
 
 <style scoped lang="scss">
-  .anticon-github.anticon-github {
-    margin-right: 0;
+  .gayhub {
     margin-top: 20px;
-  }
-  .ico {
+    margin-right: 0;
     text-align: center;
-  }
-  .anticon {
-    font-size: 50px;
-    transition: 0.25s;
 
-    &:hover {
-      color: rgb(26, 98, 194);
+    .anticon {
+      font-size: 50px;
+      transition: 0.25s;
+
+      &:hover {
+        color: rgb(26, 98, 194);
+      }
     }
   }
 
   .sponsor {
+    margin-top: 5px;
     font-size: 30px;
-    margin-top: 15px;
     text-align: center;
+
     img {
       width: 300px;
     }

@@ -319,13 +319,14 @@
 <script>
   import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue'
   export default {
-    props: ['plus'],
     components: {
       CheckOutlined,
-      CloseOutlined
+      CloseOutlined,
     },
-    created() {
-      this.createInitialValue()
+    props: {
+      plus: {
+        type: Object,
+      },
     },
     data() {
       return {
@@ -347,7 +348,7 @@
         enemyDamageNames: [
           'enemy-damage-15',
           'enemy-damage-2',
-          'enemy-damage-4'
+          'enemy-damage-4',
         ],
         // 战斗恢复选项名
         combatRegenNames: ['combat-regen-zero', 'combat-regen-half'],
@@ -358,14 +359,22 @@
         // 金钱选项名
         moneyNames: ['disable-money', 'money-plus-2', 'money-plus-4'],
         // 掉落率选项名
-        dropRateNames: ['drop-rate-2', 'drop-rate-4']
+        dropRateNames: ['drop-rate-2', 'drop-rate-4'],
       }
+    },
+    watch: {
+      plus() {
+        this.createInitialValue()
+      },
+    },
+    created() {
+      this.createInitialValue()
     },
     methods: {
       // 控制麻烦的单选
       radioController(names, { target: { value } }) {
         const {
-          plus: { options }
+          plus: { options },
         } = this
         names.forEach((i) => {
           options[i] = false
@@ -387,7 +396,7 @@
           expNames,
           itemCdNames,
           skillShacklesNames,
-          enemyDamageNames
+          enemyDamageNames,
         } = this
 
         combatRegenNames.forEach((i) => {
@@ -425,13 +434,8 @@
             this.enemyDamage = i
           }
         })
-      }
+      },
     },
-    watch: {
-      plus() {
-        this.createInitialValue()
-      }
-    }
   }
 </script>
 
@@ -443,12 +447,13 @@
   }
 
   .switchs-ul {
-    max-height: 280px;
     overflow: auto;
+    max-height: 280px;
   }
 
   .switchs-li {
     margin-top: 10px;
+
     h3 {
       font-size: 18px;
       font-weight: 700;
@@ -459,8 +464,8 @@
       flex-wrap: wrap;
 
       .mode-li {
-        margin-right: 15px;
         margin-top: 3px;
+        margin-right: 15px;
       }
     }
   }

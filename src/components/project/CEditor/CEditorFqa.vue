@@ -41,6 +41,7 @@
     & ~ .fqa-li {
       margin-top: 10px;
     }
+
     .title {
       font-size: 18px;
       font-weight: 700;

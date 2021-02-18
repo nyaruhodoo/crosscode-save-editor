@@ -1,23 +1,23 @@
 <!--
  * @Description: 用于管理存档的上传与下载
- * @LastEditTime: 2021-01-30 15:38:30
+ * @LastEditTime: 2021-02-19 00:51:27
 -->
 <template>
-  <div class="save">
+  <div class="save-control">
     <c-upload
       title="存档上传"
-      :name="fileName"
-      :path="'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode'"
+      :name="saveName"
+      :path="savePath"
       @upload="upload"
     ></c-upload>
 
     <transition>
-      <div v-if="save" class="download">
+      <div v-if="save" class="save-download">
         <a-button @click="download">
           <CloudDownloadOutlined /> 存档下载
         </a-button>
 
-        <a-select v-model:value="saveMode" style="width: 89px">
+        <a-select v-model:value="saveMode" style="width: 89px;">
           <a-select-opt-group label="游戏平台">
             <a-select-option value="pc">
               pc
@@ -43,18 +43,22 @@
   import { saveDecryption, saveEncryption } from '@/util/saveHandler.js'
 
   export default {
-    emits: ['set-save'],
-    props: ['save'],
-
     components: {
       CUpload,
-      CloudDownloadOutlined
+      CloudDownloadOutlined,
     },
+    props: {
+      save: {
+        type: Object,
+      },
+    },
+    emits: ['set-save'],
 
     data() {
       return {
+        savePath: 'C:\\Users\\你的用户名\\AppData\\Local\\CrossCode',
+        saveName: 'cc.save',
         saveMode: null,
-        fileName: 'cc.save'
       }
     },
 
@@ -66,7 +70,7 @@
       },
 
       download() {
-        let { fileName, save, saveMode } = this
+        let { saveName, save, saveMode } = this
 
         // 研究存档用
         if (saveMode === 'dev') {
@@ -79,24 +83,25 @@
 
         if (!this.a) {
           this.a = document.createElement('a')
-          this.a.download = fileName
+          this.a.download = saveName
         }
         this.a.href = URL.createObjectURL(
           new Blob([save], { type: 'application/json' })
         )
         this.a.click()
         this.message.success('请手动替换存档,并且重启游戏')
-      }
-    }
+      },
+    },
   }
 </script>
 
 <style scoped lang="scss">
-  .save {
+  .save-control {
     display: inline-block;
     transform: translate(40px, 40px);
   }
-  .download {
+
+  .save-download {
     margin-top: 30px;
   }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="li">
-    <span>等级: </span>
+  <div class="editor-li">
+    <span>等级:</span>
     <a-input-number
       id="inputNumber"
       v-model:value="player.level"
-      style="width: 55px"
+      style="width: 55px;"
       :min="1"
       :max="99"
       :precision="0"
@@ -12,25 +12,31 @@
     />
   </div>
 
-  <div class="li">
-    <a-button type="primary" @click="player.credit = 9999999"
+  <div class="editor-li">
+    <a-button type="primary" @ceditor-lick="player.credit = 9999999"
       >无限金钱</a-button
     >
   </div>
 
-  <div class="li">
+  <div class="editor-li">
     <a-tooltip placement="right">
       <template #title>
         <span>获取新元素时请重新使用</span>
       </template>
-      <a-button type="primary" @click="skillPointsMax">无限技能点</a-button>
+      <a-button type="primary" @ceditor-lick="skillPointsMax"
+        >无限技能点</a-button
+      >
     </a-tooltip>
   </div>
 </template>
 
 <script>
   export default {
-    props: ['player'],
+    props: {
+      player: {
+        type: Object,
+      },
+    },
     methods: {
       // 修复输入框组件的BUG
       numberChange(value) {
@@ -42,13 +48,13 @@
 
         // 附送电路覆写
         this.player.items[428] = 99
-      }
-    }
+      },
+    },
   }
 </script>
 
 <style scoped lang="scss">
-  .li ~ .li {
+  .editor-li ~ .editor-li {
     margin-top: 20px;
   }
 </style>

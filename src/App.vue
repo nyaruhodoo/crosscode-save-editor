@@ -1,5 +1,6 @@
 <template>
   <div class="bg-lea"></div>
+
   <!--使用source的原因是因为vue编译时不会处理audio标签的路径,你是要坑死我?-->
   <audio ref="audio" loop>
     <source src="@/assets/muLea.ogg" />
@@ -16,31 +17,39 @@
   export default {
     components: {
       CSave,
-      CEditor
+      CEditor,
     },
 
     data() {
       return {
-        save: null
+        save: null,
       }
     },
 
     methods: {
       setSave(save) {
         const {
-          $refs: { audio }
+          $refs: { audio },
         } = this
+
         this.save = save
 
-        audio.play()
         audio.volume = 0.2
-      }
-    }
+        audio.play()
+      },
+    },
   }
 </script>
 
 <style lang="scss">
-  body {
+  #app {
+    position: relative;
+    width: 100vw;
+    min-width: 1280px;
+    height: 100vh;
+    min-height: 720px;
+    background: url('~@/assets/img/bj.png') no-repeat center top;
+    background-size: cover;
     cursor: url('~@/assets/img/cursor.png'), auto;
     user-select: none;
   }
@@ -50,6 +59,7 @@
     width: 10px;
     padding: 15px 0;
   }
+
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 6px;
@@ -60,19 +70,10 @@
   .v-leave-to {
     opacity: 0;
   }
+
   .v-enter-active,
   .v-leave-active {
     transition: opacity 0.25s ease;
-  }
-
-  #app {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    min-width: 1280px;
-    min-height: 720px;
-    background: url('~@/assets/img/bj.png') no-repeat center top;
-    background-size: cover;
   }
 
   @keyframes lea-move {
@@ -80,15 +81,16 @@
       background-position: 100% 0;
     }
   }
+
   .bg-lea {
-    width: 460px;
-    height: 612px;
-    background: url('~@/assets/img/bj-lea.png') no-repeat;
-    background-size: cover;
-    background-position: 0 0;
     position: absolute;
     right: 1%;
     bottom: 0;
+    width: 460px;
+    height: 612px;
     animation: lea-move steps(5) 0.75s infinite;
+    background: url('~@/assets/img/bj-lea.png') no-repeat;
+    background-position: 0 0;
+    background-size: cover;
   }
 </style>

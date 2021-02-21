@@ -12,7 +12,7 @@ import {
   Empty,
   Switch,
   Radio,
-  Table
+  Table,
 } from 'ant-design-vue'
 
 import App from './App.vue'

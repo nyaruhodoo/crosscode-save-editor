@@ -6,7 +6,7 @@
     </a-tab-pane>
 
     <a-tab-pane key="2" tab="道具">
-      <c-editor-item :items="activeSave.player.items"></c-editor-item>
+      <c-editor-items :items="activeSave.player.items"></c-editor-items>
     </a-tab-pane>
 
     <a-tab-pane key="3" tab="二周目">
@@ -56,7 +56,7 @@
 
 <script>
   import CEditorLea from './CEditorLea.vue'
-  import CEditorItem from './CEditorItem.vue'
+  import CEditorItems from './CEditorItems.vue'
   import CEditorHardMode from './CEditorHardMode.vue'
   import CEditorFqa from './CEditorFqa.vue'
   import CEditorAuthor from './CEditorAuthor.vue'
@@ -66,7 +66,7 @@
   export default {
     components: {
       CEditorLea,
-      CEditorItem,
+      CEditorItems,
       CEditorHardMode,
       CEditorFqa,
       CEditorAuthor,

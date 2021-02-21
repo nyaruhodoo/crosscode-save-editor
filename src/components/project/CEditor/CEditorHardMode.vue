@@ -1,6 +1,6 @@
 <template>
-  <label class="master-switch">
-    <span>启用二周目: </span>
+  <label class="switch-master">
+    <span>开启二周目: </span>
     <a-switch v-model:checked="plus.active">
       <template #checkedChildren><check-outlined /></template>
       <template #unCheckedChildren><close-outlined /></template>
@@ -72,14 +72,6 @@
     <div class="switchs-li">
       <h3>食物:</h3>
       <div class="mode-ul">
-        <!--     <div class="mode-li">
-              <span>食物无CD: </span>
-              <a-switch v-model:checked="plus.options['item-cd-zero']">
-                <template #checkedChildren><check-outlined /></template>
-                <template #unCheckedChildren><close-outlined /></template>
-              </a-switch>
-            </div>
-        -->
         <label class="mode-li">
           <span>增益时间翻倍</span>
           <a-switch v-model:checked="plus.options['double-buff-time']">
@@ -156,6 +148,7 @@
       </div>
     </div>
 
+    <!--单选项-->
     <div class="switchs-li">
       <h3>数值调整:</h3>
       <div class="mode-ul">
@@ -318,6 +311,7 @@
 
 <script>
   import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue'
+
   export default {
     components: {
       CheckOutlined,
@@ -371,8 +365,12 @@
       this.createInitialValue()
     },
     methods: {
-      // 控制麻烦的单选
+      /*  
+        麻烦的单选
+        这里无法做互斥,因为存档里用了不同属性,只能全部清空再添加
+      */
       radioController(names, { target: { value } }) {
+        console.log(names, value)
         const {
           plus: { options },
         } = this
@@ -385,7 +383,7 @@
 
       // 生成初始值
       createInitialValue() {
-        // 初始化一次数据修复切换存档时的选中状态,因为不会重新渲染
+        // 初始化一次数据,修复切换存档时的选中状态,因为不会重新渲染
         Object.assign(this.$data, this.$options.data())
 
         const {
@@ -399,6 +397,7 @@
           enemyDamageNames,
         } = this
 
+        // 收集值
         combatRegenNames.forEach((i) => {
           if (options[i]) {
             this.combatRegen = i
@@ -440,7 +439,7 @@
 </script>
 
 <style scoped lang="scss">
-  .master-switch {
+  .switch-master {
     display: block;
     margin-bottom: 10px;
     color: red;
@@ -449,23 +448,27 @@
   .switchs-ul {
     overflow: auto;
     max-height: 280px;
-  }
 
-  .switchs-li {
-    margin-top: 10px;
+    .switchs-li {
+      margin-top: 10px;
 
-    h3 {
-      font-size: 18px;
-      font-weight: 700;
-    }
+      h3 {
+        font-size: 18px;
+        font-weight: 700;
+      }
 
-    .mode-ul {
-      display: flex;
-      flex-wrap: wrap;
+      .mode-ul {
+        display: flex;
+        flex-wrap: wrap;
 
-      .mode-li {
-        margin-top: 3px;
-        margin-right: 15px;
+        .mode-li {
+          margin-top: 3px;
+          margin-right: 15px;
+
+          span {
+            margin-right: 3px;
+          }
+        }
       }
     }
   }

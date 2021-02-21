@@ -61,11 +61,8 @@
   </div>
 
   <!--自定义道具-->
-  <div class="mod-item">
-    <a-button
-      type="primary"
-      class="mod-item-button"
-      @click="showAllitems = !showAllitems"
+  <div>
+    <a-button type="primary" @click="showItemsUl = !showItemsUl"
       >获取自定义道具</a-button
     >
 
@@ -79,7 +76,7 @@
     <!--道具列表-->
     <teleport to="#app">
       <transition>
-        <div v-show="showAllitems" class="items">
+        <div v-show="showItemsUl" class="items-box">
           <div>
             <a-input
               v-model:value="searchValue"
@@ -104,21 +101,26 @@
             <a-button type="primary" @click="getCheckedItems"
               >{{ getNumber ? '获取' : '删除' }}选中道具</a-button
             >
-
-            <CloseOutlined @click="showAllitems = !showAllitems" />
+            <a-button type="danger" @click="itemCheckeds.length = 0"
+              >清空选中道具</a-button
+            >
           </div>
+
+          <CloseOutlined @click="showItemsUl = !showItemsUl" />
 
           <div v-if="Object.entries(itemsFilter).length" class="items-ul">
             <div
               v-for="(itemsUl, itemsType, itemsIndex) of itemsFilter"
               :key="itemsIndex"
-              class="items-li"
+              class="items-type-ul"
             >
               <!--title独立出来不进行滚动-->
-              <div class="item-title">{{ itemsType }}</div>
+              <div>
+                <div class="items-type-title">{{ itemsType }}</div>
+              </div>
 
               <!--列表主题出现滚动条-->
-              <div class="ova">
+              <div class="items-type-li">
                 <label
                   v-for="(item, itemIndex) of itemsUl"
                   :key="itemIndex"
@@ -160,7 +162,7 @@
     data() {
       return {
         allItems: Object.freeze(allItems),
-        showAllitems: false,
+        showItemsUl: false,
         searchValue: '',
         itemCheckeds: [],
         getNumber: 1,
@@ -264,7 +266,7 @@
     margin: 0 15px 15px 0;
   }
 
-  .items {
+  .items-box {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -275,6 +277,7 @@
     border-radius: 5px;
     transform: translate(-50%, -55%);
 
+    // 关闭按钮
     .anticon-close {
       position: absolute;
       top: 15px;
@@ -291,16 +294,16 @@
       justify-content: space-between;
       margin-top: 10px;
 
-      .items-li {
+      .items-type-ul {
         margin: 0 10px;
 
-        .item-title {
+        .items-type-title {
           color: #f5222d;
           font-weight: 700;
         }
 
         // 滚动条单独存在于每列
-        .ova {
+        .items-type-li {
           overflow: auto;
           height: 300px;
 
@@ -308,7 +311,7 @@
             display: block;
             margin-top: 5px;
             margin-right: 5px;
-            transition: all 0.25s;
+            transition: color 0.25s;
             white-space: nowrap;
 
             .input {

@@ -1,20 +1,24 @@
 <template>
   <!--便捷功能-->
   <div>
-    <a-button type="primary" @click="getAllItems">获取全道具</a-button>
+    <a-button type="primary" @click="getAllItems">{{
+      $root.locale.editorItems.获取全道具
+    }}</a-button>
 
     <a-tooltip placement="right">
       <template #title>
-        <span>可以修复报错问题</span>
+        <span>{{ $root.locale.editorItems.清空道具提示 }}</span>
       </template>
-      <a-button type="primary" @click="clearAllItems">清空道具</a-button>
+      <a-button type="primary" @click="clearAllItems">{{
+        $root.locale.editorItems.清空道具
+      }}</a-button>
     </a-tooltip>
 
     <br />
 
-    <a-button type="primary" @click="getItems([63, 496], 99)"
-      >获取食物</a-button
-    >
+    <a-button type="primary" @click="getItems([63, 496], 99)">{{
+      $root.locale.editorItems.获取食物
+    }}</a-button>
 
     <!--新版本无法添加女忍服,可能需要额外文件支持-->
     <a-button
@@ -36,38 +40,44 @@
           1
         )
       "
-      >获取时装</a-button
+      >{{ $root.locale.editorItems.获取时装 }}</a-button
     >
 
-    <a-button type="primary" @click="getItems([247])">获取跑鞋</a-button>
+    <a-button type="primary" @click="getItems([247])">{{
+      $root.locale.editorItems.获取跑鞋
+    }}</a-button>
 
-    <a-button type="primary" @click="getItems(['568-599', '601-605', 607, 611])"
-      >获取成长武器</a-button
-    >
-
-    <br />
-
-    <a-button type="primary" @click="getItems([501])">获取宝箱搜索器</a-button>
-
-    <a-button type="primary" @click="getItems(['154-156'])"
-      >获取宝箱钥匙</a-button
+    <a-button
+      type="primary"
+      @click="getItems(['568-599', '601-605', 607, 611])"
+      >{{ $root.locale.editorItems.获取成长武器 }}</a-button
     >
 
     <br />
 
-    <a-button type="primary" @click="getItems(['448-453', 618])"
-      >获取地区强化剂</a-button
-    >
+    <a-button type="primary" @click="getItems([501])">{{
+      $root.locale.editorItems.获取宝箱搜寻器
+    }}</a-button>
+
+    <a-button type="primary" @click="getItems(['154-156'])">{{
+      $root.locale.editorItems.获取宝箱钥匙
+    }}</a-button>
+
+    <br />
+
+    <a-button type="primary" @click="getItems(['448-453', 618])">{{
+      $root.locale.editorItems.获取地区强化剂
+    }}</a-button>
   </div>
 
   <!--自定义道具-->
   <div>
-    <a-button type="primary" @click="showItemsUl = !showItemsUl"
-      >获取自定义道具</a-button
-    >
+    <a-button type="primary" @click="showItemsUl = !showItemsUl">{{
+      $root.locale.editorItems.获取自定义道具
+    }}</a-button>
 
     <c-upload
-      title="道具表上传"
+      :title="$root.locale.editorItems.道具数据上传"
       :name="jsonName"
       :path="itemsPath"
       @upload="upload"
@@ -81,14 +91,15 @@
             <a-input
               v-model:value="searchValue"
               style="width: auto;"
-              placeholder="查找道具"
+              :placeholder="$root.locale.editorItems.查找道具"
             />
 
             <span style="margin: 0 10px;"
-              >当前已选中{{ itemCheckeds.length }}</span
+              >{{ $root.locale.editorItems.当前已选中
+              }}{{ itemCheckeds.length }}</span
             >
 
-            <span>数量:</span>
+            <span>{{ $root.locale.editorItems.数量 }}:</span>
             <a-input-number
               id="inputNumber"
               v-model:value="getNumber"
@@ -99,11 +110,15 @@
               @change="numberChange"
             />
             <a-button type="primary" @click="getCheckedItems"
-              >{{ getNumber ? '获取' : '删除' }}选中道具</a-button
+              >{{
+                getNumber
+                  ? $root.locale.editorItems.获取
+                  : $root.locale.editorItems.删除
+              }}{{ $root.locale.editorItems.选中道具 }}</a-button
             >
-            <a-button type="danger" @click="itemCheckeds.length = 0"
-              >清空选中道具</a-button
-            >
+            <a-button type="danger" @click="itemCheckeds.length = 0">{{
+              $root.locale.editorItems.清空选中道具
+            }}</a-button>
           </div>
 
           <CloseOutlined @click="showItemsUl = !showItemsUl" />
@@ -116,7 +131,9 @@
             >
               <!--title独立出来不进行滚动-->
               <div>
-                <div class="items-type-title">{{ itemsType }}</div>
+                <div class="items-type-title">
+                  {{ $root.locale.editorItems[itemsType] }}
+                </div>
               </div>
 
               <!--列表主题出现滚动条-->
@@ -232,16 +249,17 @@
             items[i] = num
           }
         })
+
+        this.message.success(this.$root.locale.editorItems.添加道具完成)
       },
       getCheckedItems() {
         const { itemCheckeds, getNumber, getItems } = this
         if (!itemCheckeds.length) {
-          this.message.error('当前没有选中的道具')
+          this.message.error(this.$root.locale.editorItems.没有选中)
           return
         }
 
         getItems(itemCheckeds, getNumber)
-        this.message.success('批量添加道具完成')
         this.itemCheckeds.length = 0
       },
       clearAllItems() {

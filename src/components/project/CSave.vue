@@ -1,11 +1,11 @@
 <!--
  * @Description: 用于管理存档的上传与下载
- * @LastEditTime: 2021-02-19 00:51:27
+ * @LastEditTime: 2021-02-26 21:53:00
 -->
 <template>
   <div class="save-control">
     <c-upload
-      title="存档上传"
+      :title="$root.locale.save.存档上传"
       :name="saveName"
       :path="savePath"
       @upload="upload"
@@ -14,11 +14,11 @@
     <transition>
       <div v-if="save" class="save-download">
         <a-button @click="download">
-          <CloudDownloadOutlined /> 存档下载
+          <CloudDownloadOutlined /> {{ $root.locale.save.存档下载 }}
         </a-button>
 
         <a-select v-model:value="saveMode" style="width: 89px;">
-          <a-select-opt-group label="游戏平台">
+          <a-select-opt-group :label="$root.locale.save.游戏平台">
             <a-select-option value="pc">
               pc
             </a-select-option>
@@ -89,7 +89,7 @@
           new Blob([save], { type: 'application/json' })
         )
         this.a.click()
-        this.message.success('请手动替换存档,并且重启游戏')
+        this.message.success(this.$root.locale.save.下载提示)
       },
     },
   }

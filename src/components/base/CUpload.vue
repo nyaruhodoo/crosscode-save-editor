@@ -3,7 +3,7 @@
  * @param {String} name: 要求的文件名
  * @param {String} path: 提示路径
  * @param {String} title: 按钮文字
- * @LastEditTime: 2021-02-19 00:47:14
+ * @LastEditTime: 2021-02-26 21:55:45
 -->
 <template>
   <div class="file-upload">
@@ -19,7 +19,7 @@
 
     <a-tooltip :placement="'right'">
       <template #title>
-        <span>路径提示</span>
+        <span>{{ $root.locale.upload.路径提示 }}</span>
       </template>
       <a-button
         class="help-btn"
@@ -66,7 +66,7 @@
         const file = fileInput.files[0]
         if (!file) return
         if (file.name !== name) {
-          this.message.error(`请确认文件名是否为: ${name}`)
+          this.message.error(`${this.$root.locale.upload.确认文件名}: ${name}`)
           fileInput.value = null
           return
         }
@@ -79,9 +79,9 @@
 
         try {
           await navigator.clipboard.writeText(path)
-          this.message.success('路径位置已经复制到剪切板')
+          this.message.success(this.$root.locale.upload.复制路径)
         } catch (error) {
-          this.message.error(`请手动复制路径, ${path}`)
+          this.message.error(`${this.$root.locale.upload.手动复制}, ${path}`)
         }
       },
 

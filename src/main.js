@@ -13,6 +13,8 @@ import {
   Switch,
   Radio,
   Table,
+  Dropdown,
+  Menu,
 } from 'ant-design-vue'
 
 import App from './App.vue'
@@ -36,5 +38,7 @@ app
   .use(Empty)
   .use(Switch)
   .use(InputNumber)
+  .use(Dropdown)
+  .use(Menu)
 
 app.mount('#app')

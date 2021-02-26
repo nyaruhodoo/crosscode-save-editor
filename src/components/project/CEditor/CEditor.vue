@@ -1,21 +1,23 @@
 <template>
   <!--编辑器-->
   <a-tabs :animated="false" :tab-bar-gutter="0">
-    <a-tab-pane key="1" tab="主人翁">
+    <a-tab-pane key="1" :tab="$root.locale.editor.主人翁">
       <c-editor-lea :player="activeSave.player"></c-editor-lea>
     </a-tab-pane>
 
-    <a-tab-pane key="2" tab="道具">
+    <a-tab-pane key="2" :tab="$root.locale.editor.道具">
       <c-editor-items :items="activeSave.player.items"></c-editor-items>
     </a-tab-pane>
 
-    <a-tab-pane key="3" tab="二周目">
+    <a-tab-pane key="3" :tab="$root.locale.editor.二周目">
       <c-editor-hard-mode :plus="activeSave.newGamePlus"></c-editor-hard-mode>
     </a-tab-pane>
 
-    <a-tab-pane key="4" tab="FQA"> <c-editor-fqa></c-editor-fqa></a-tab-pane>
+    <a-tab-pane key="4" :tab="$root.locale.editor.帮助">
+      <c-editor-fqa></c-editor-fqa
+    ></a-tab-pane>
 
-    <a-tab-pane key="5" tab="作者">
+    <a-tab-pane key="5" :tab="$root.locale.editor.作者">
       <c-editor-author></c-editor-author>
     </a-tab-pane>
 
@@ -26,7 +28,7 @@
         class="switch-btn"
         type="primary"
         @click="showSavesUl = !showSavesUl"
-        >切换存档</a-button
+        >{{ $root.locale.editor.切换存档 }}</a-button
       >
     </template>
   </a-tabs>
@@ -44,11 +46,20 @@
         <div class="save-number">
           {{ !saveLiIndex ? 'auto' : numberFormat(saveLiIndex) }}
         </div>
-        <div>等级: {{ saveLi.player.level }}</div>
-        <div>金钱: {{ saveLi.player.credit }}</div>
-        <div>所在处: {{ mapFormat(saveLi.area, saveLi.specialMap) }}</div>
-        <div>剧情进度: {{ numberFormat(saveLi.player.chapter + 1) }}</div>
-        <div>游玩时间: {{ timeFormat(saveLi.playtime) }}</div>
+        <div>{{ $root.locale.editor.等级 }}: {{ saveLi.player.level }}</div>
+        <div>{{ $root.locale.editor.金钱 }}: {{ saveLi.player.credit }}</div>
+        <div>
+          {{ $root.locale.editor.地图 }}:
+          {{ mapFormat(saveLi.area, saveLi.specialMap) }}
+        </div>
+        <div>
+          {{ $root.locale.editor.剧情 }}:
+          {{ numberFormat(saveLi.player.chapter + 1) }}
+        </div>
+        <div>
+          {{ $root.locale.editor.游玩时间 }}:
+          {{ timeFormat(saveLi.playtime) }}
+        </div>
       </li>
     </ul>
   </transition>
@@ -60,6 +71,7 @@
   import CEditorHardMode from './CEditorHardMode.vue'
   import CEditorFqa from './CEditorFqa.vue'
   import CEditorAuthor from './CEditorAuthor.vue'
+
   import saveFix from '@/util/saveFix.js'
   import { numberFormat, mapFormat, timeFormat } from '@/util/stringFormat.js'
 

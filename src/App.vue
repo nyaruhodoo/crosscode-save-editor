@@ -8,22 +8,35 @@
 
   <c-save :save="save" @set-save="setSave"></c-save>
   <c-editor v-if="save" :save="save"></c-editor>
+
+  <c-toggle-lang v-model="activeLang"></c-toggle-lang>
 </template>
 
 <script>
   import CSave from '@/components/project/CSave.vue'
   import CEditor from '@/components/project/CEditor/CEditor.vue'
+  import CToggleLang from '@/components/base/CToggleLang.vue'
+
+  import locales from './locales.json'
 
   export default {
     components: {
       CSave,
       CEditor,
+      CToggleLang,
     },
 
     data() {
       return {
         save: null,
+        activeLang: 'zh_CN',
+        locales: locales,
       }
+    },
+    computed: {
+      locale() {
+        return this.locales[this.activeLang]
+      },
     },
 
     methods: {

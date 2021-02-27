@@ -3,11 +3,11 @@
     <a href="https://github.com/psrx/crosscode-save-editor">
       <GithubOutlined
     /></a>
-    <p>求Star!</p>
+    <p>Star! Star! Star!</p>
   </div>
 
   <div class="sponsor">
-    <h3>你一定忍不住给我打钱吧?</h3>
+    <h3>{{ $root.locale.Author.赞助 }}</h3>
     <img src="@/assets/img/sponsor.png" />
   </div>
 </template>

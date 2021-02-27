@@ -1,148 +1,210 @@
 <template>
   <label class="switch-master">
-    <span>开启二周目: </span>
+    <span>{{ $root.locale.editorHardMode.开启 }}: </span>
     <a-switch v-model:checked="plus.active">
-      <template #checkedChildren><check-outlined /></template>
-      <template #unCheckedChildren><close-outlined /></template>
+      <template #checkedChildren><check-outlined @click="clickFix"/></template>
+      <template #unCheckedChildren
+        ><close-outlined @click="clickFix"
+      /></template>
     </a-switch>
   </label>
 
   <div class="switchs-ul">
     <div class="switchs-li">
-      <h3>主人翁:</h3>
+      <h3>{{ $root.locale.editorHardMode.主人翁 }}:</h3>
       <div class="mode-ul">
         <label class="mode-li">
-          <span>一拳超人</span>
+          <span>{{ $root.locale.editorHardMode.外挂超人 }}</span>
           <a-switch v-model:checked="plus.options['sergey-hax']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>子弹时间</span>
+          <span>{{ $root.locale.editorHardMode.少女时间 }}</span>
           <a-switch v-model:checked="plus.options['witch-time']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>冲刺大师</span>
+          <span>{{ $root.locale.editorHardMode.冲刺大师 }}</span>
           <a-switch v-model:checked="plus.options['dash-1']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>无限SP</span>
+          <span>{{ $root.locale.editorHardMode.恶魔扳机 }}</span>
           <a-switch v-model:checked="plus.options['infinite-sp']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>无技能封锁</span>
+          <span>{{ $root.locale.editorHardMode.抢鲜体验 }}</span>
           <a-switch v-model:checked="plus.options['remove-skill-blocks']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>无过载</span>
+          <span>{{ $root.locale.editorHardMode.完美平衡 }}</span>
           <a-switch v-model:checked="plus.options['overload-disable']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
-          </a-switch>
-        </label>
-
-        <label class="mode-li">
-          <span>脚底抹油</span>
-          <a-switch v-model:checked="plus.options['ice-physics']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
       </div>
     </div>
 
     <div class="switchs-li">
-      <h3>食物:</h3>
+      <h3>{{ $root.locale.editorHardMode.食物 }}:</h3>
       <div class="mode-ul">
         <label class="mode-li">
-          <span>增益时间翻倍</span>
+          <span>{{ $root.locale.editorHardMode.超级营养 }}</span>
           <a-switch v-model:checked="plus.options['double-buff-time']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
       </div>
     </div>
 
     <div class="switchs-li">
-      <h3>怪物:</h3>
+      <h3>{{ $root.locale.editorHardMode.怪物 }}:</h3>
       <div class="mode-ul">
         <label class="mode-li">
-          <span>一拳超人</span>
+          <span>{{ $root.locale.editorHardMode.莉亚必须死 }}</span>
           <a-switch v-model:checked="plus.options['lea-must-die']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>等级同步主人翁</span>
+          <span>{{ $root.locale.editorHardMode.放马过来 }}</span>
           <a-switch v-model:checked="plus.options['harder-enemies']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>攻击频率加快</span>
+          <span>{{ $root.locale.editorHardMode.绝不留情 }}</span>
           <a-switch v-model:checked="plus.options['scale-enemies']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>主动攻击</span>
+          <span>{{ $root.locale.editorHardMode.充满敌意 }}</span>
           <a-switch v-model:checked="plus.options['enemy-aggro']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
       </div>
     </div>
 
     <div class="switchs-li">
-      <h3>功能调整:</h3>
+      <h3>{{ $root.locale.editorHardMode.功能调整 }}:</h3>
       <div class="mode-ul">
         <label class="mode-li">
-          <span>禁用成就</span>
+          <span>{{ $root.locale.editorHardMode.禁用成就 }}</span>
           <a-switch v-model:checked="plus.options['no-trophies']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>非路径点不可传送</span>
+          <span>{{ $root.locale.editorHardMode.古典快速旅行 }}</span>
           <a-switch v-model:checked="plus.options['waypoints-teleport']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
 
         <label class="mode-li">
-          <span>非路径点不恢复血量</span>
+          <span>{{ $root.locale.editorHardMode.古典治疗 }}</span>
           <a-switch v-model:checked="plus.options['waypoints-heals']">
-            <template #checkedChildren><check-outlined /></template>
-            <template #unCheckedChildren><close-outlined /></template>
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
+          </a-switch>
+        </label>
+
+        <label class="mode-li">
+          <span>{{ $root.locale.editorHardMode.滑溜溜 }}</span>
+          <a-switch v-model:checked="plus.options['ice-physics']">
+            <template #checkedChildren
+              ><check-outlined @click="clickFix"
+            /></template>
+            <template #unCheckedChildren
+              ><close-outlined @click="clickFix"
+            /></template>
           </a-switch>
         </label>
       </div>
@@ -150,7 +212,7 @@
 
     <!--单选项-->
     <div class="switchs-li">
-      <h3>数值调整:</h3>
+      <h3>{{ $root.locale.editorHardMode.数值调整 }}:</h3>
       <div class="mode-ul">
         <!--技能-->
         <a-radio-group
@@ -160,15 +222,15 @@
           size="small"
           @change="radioController(skillShacklesNames, $event)"
         >
-          技能束缚
+          {{ $root.locale.editorHardMode.技能束缚 }}
           <a-radio-button :value="false">
-            无
+            0
           </a-radio-button>
           <a-radio-button :value="skillShacklesNames[0]">
-            1层
+            1
           </a-radio-button>
           <a-radio-button :value="skillShacklesNames[1]">
-            2层
+            2
           </a-radio-button>
         </a-radio-group>
 
@@ -180,22 +242,22 @@
           size="small"
           @change="radioController(enemyDamageNames, $event)"
         >
-          怪物伤害
+          {{ $root.locale.editorHardMode.怪物伤害 }}
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
           <a-radio-button :value="enemyDamageNames[0]">
-            1.5倍
+            1.5x
           </a-radio-button>
           <a-radio-button :value="enemyDamageNames[1]">
-            2倍
+            2x
           </a-radio-button>
           <a-radio-button :value="enemyDamageNames[2]">
-            4倍
+            4x
           </a-radio-button>
         </a-radio-group>
 
-        <!--战斗恢复-->
+        <!--战斗治疗-->
         <a-radio-group
           v-model:value="combatRegen"
           class="mode-li"
@@ -203,15 +265,15 @@
           size="small"
           @change="radioController(combatRegenNames, $event)"
         >
-          战斗恢复
+          {{ $root.locale.editorHardMode.战斗治疗 }}
           <a-radio-button :value="combatRegenNames[0]">
-            禁止
+            0
           </a-radio-button>
           <a-radio-button :value="combatRegenNames[1]">
-            0.5倍
+            0.5x
           </a-radio-button>
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
         </a-radio-group>
 
@@ -223,19 +285,19 @@
           size="small"
           @change="radioController(itemCdNames, $event)"
         >
-          食物冷却时间
+          {{ $root.locale.editorHardMode.食物冷却 }}
           <a-radio-button :value="itemCdNames[0]">
-            0倍
+            0
           </a-radio-button>
           <a-radio-button :value="itemCdNames[1]">
-            0.5倍
+            0.5x
           </a-radio-button>
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
 
           <a-radio-button :value="itemCdNames[2]">
-            2倍
+            2x
           </a-radio-button>
         </a-radio-group>
 
@@ -247,15 +309,16 @@
           size="small"
           @change="radioController(dropRateNames, $event)"
         >
-          物品掉落率
+          {{ $root.locale.editorHardMode.掉落率 }}
+
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
           <a-radio-button :value="dropRateNames[0]">
-            2倍
+            2x
           </a-radio-button>
           <a-radio-button :value="dropRateNames[1]">
-            4倍
+            4x
           </a-radio-button>
         </a-radio-group>
 
@@ -267,18 +330,19 @@
           size="small"
           @change="radioController(moneyNames, $event)"
         >
-          金钱
+          {{ $root.locale.editorHardMode.金钱 }}
+
           <a-radio-button :value="moneyNames[0]">
-            0倍
+            0
           </a-radio-button>
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
           <a-radio-button :value="moneyNames[1]">
-            2倍
+            2x
           </a-radio-button>
           <a-radio-button :value="moneyNames[2]">
-            4倍
+            4x
           </a-radio-button>
         </a-radio-group>
 
@@ -290,18 +354,19 @@
           size="small"
           @change="radioController(expNames, $event)"
         >
-          经验值
+          {{ $root.locale.editorHardMode.经验值 }}
+
           <a-radio-button :value="expNames[0]">
-            0倍
+            0
           </a-radio-button>
           <a-radio-button :value="false">
-            1倍
+            1x
           </a-radio-button>
           <a-radio-button :value="expNames[1]">
-            2倍
+            2x
           </a-radio-button>
           <a-radio-button :value="expNames[2]">
-            4倍
+            4x
           </a-radio-button>
         </a-radio-group>
       </div>
@@ -434,6 +499,11 @@
           }
         })
       },
+
+      // 修复垃圾组件的点击BUG
+      clickFix(e) {
+        e.target.parentNode.parentNode.click()
+      },
     },
   }
 </script>
@@ -471,5 +541,9 @@
         }
       }
     }
+  }
+
+  .ant-radio-group {
+    width: 45%;
   }
 </style>

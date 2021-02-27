@@ -1,6 +1,6 @@
 <!--
  * @Description: 切换语言
- * @LastEditTime: 2021-02-26 20:51:00
+ * @LastEditTime: 2021-02-27 14:58:06
 -->
 <template>
   <a-select v-model:value="modelValue" style="width: 89px;" @change="onChange">
@@ -10,10 +10,6 @@
 
     <a-select-option value="en_US">
       en_US
-    </a-select-option>
-
-    <a-select-option value="ja_JP">
-      ja_JP
     </a-select-option>
   </a-select>
 </template>
@@ -34,4 +30,10 @@
   }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .ant-select {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+  }
+</style>

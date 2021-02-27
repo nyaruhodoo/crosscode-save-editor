@@ -11,10 +11,6 @@ export const srtingFormat = (str) => {
 export const numberFormat = (number) => {
   return number.toString().padStart(2, '0')
 }
-// 地图合并
-export const mapFormat = (map1, map2) => {
-  return `${srtingFormat(map1.zh_CN)} ${srtingFormat(map2.zh_CN)}`
-}
 
 // 时间处理
 export const timeFormat = (time) => {

@@ -21,7 +21,7 @@
       "等级": "等级",
       "金钱": "金钱",
       "地图": "地图",
-      "剧情": "剧情",
+      "剧情": "剧情章节",
       "游玩时间": "游玩时间",
       "作者": "作者"
     },
@@ -83,23 +83,129 @@
       "禁用成就": "禁用成就",
       "技能束缚": "技能束缚",
       "怪物伤害": "怪物伤害",
-      "战斗恢复": "战斗恢复",
+      "战斗治疗": "战斗治疗",
       "食物冷却": "食物冷却",
       "掉落率": "掉落率",
       "经验值": "经验值",
       "金钱": "金钱"
     },
     "editorFqa": {
-      "1": ["什么是undefined", "尚未实装的新道具"],
-      "2": ["添加的任务道具不起作用", "请在游戏内正常获取一次"],
-      "3": ["添加道具报错", "添加了游戏版本不支持的道具,请直接清空道具"],
-      "4": ["功能失效", "请确定是否已替换存档并且重启游戏"]
+      "0": ["什么是undefined", "尚未实装的新道具"],
+      "1": ["添加的任务道具不起作用", "请在游戏内正常获取一次任务道具"],
+      "2": ["添加道具报错", "添加了游戏版本不支持的道具,请直接清空道具"],
+      "3": ["功能失效", "请确定是否已替换存档并且重启游戏"]
+    },
+    "Author": {
+      "赞助": "你一定很想给我打钱吧?"
     }
   },
   "en_US": {
-    "存档上传": "upload",
-    "存档下载": "download",
-    "下载提示": "Please replace the archive manually and restart the game",
-    "游戏平台": "Game platform"
+    "save": {
+      "存档上传": "Upload",
+      "存档下载": "Download",
+      "下载提示": "Please replace the archive manually and restart the game",
+      "游戏平台": "Game platform"
+    },
+    "upload": {
+      "路径提示": "Path tips",
+      "确认文件名": "Please confirm that the file name is",
+      "复制路径": "The path position has been copied to the clipboard",
+      "手动复制": "Please copy the path manually"
+    },
+    "editor": {
+      "主人翁": "Master",
+      "道具": "Items",
+      "二周目": "New Game Plus",
+      "帮助": "Help",
+      "切换存档": "Switch Save",
+      "等级": "Level",
+      "金钱": "Money",
+      "地图": "Map",
+      "剧情": "Plot Chapters",
+      "游玩时间": "Playtime",
+      "作者": "Author"
+    },
+    "editorLea": {
+      "等级": "Level",
+      "无限金钱": "Max money",
+      "无限技能点": "Max skill points",
+      "技能点提示": "Use again when getting new elements"
+    },
+    "editorItems": {
+      "获取全道具": "Get all the items",
+      "清空道具": "Empty items",
+      "清空道具提示": "It can fix the problem of error reporting",
+      "获取食物": "Get food",
+      "获取时装": "Get fashion",
+      "获取跑鞋": "Get running shoes",
+      "获取成长武器": "Acquire the weapon of growth",
+      "获取宝箱搜寻器": "Get treasure box finder",
+      "获取宝箱钥匙": "Get the treasure box key",
+      "获取地区强化剂": "Get regional enhancers",
+      "获取自定义道具": "Get custom items",
+      "道具数据上传": "Items data upload",
+      "查找道具": "Find items",
+      "当前已选中": "Currently selected",
+      "数量": "number",
+      "获取": "Get",
+      "删除": "Delete",
+      "选中道具": "Select items",
+      "清空选中道具": "Empty selected items",
+      "TRADE": "TRADE",
+      "CONS": "CONS",
+      "EQUIP": "EQUIP",
+      "TOGGLE": "TOGGLE",
+      "KEY": "KEY",
+      "添加道具完成": "Batch add items completed",
+      "没有选中": "There are no props currently selected"
+    },
+    "editorHardMode": {
+      "开启": "Open",
+      "主人翁": "Master",
+      "食物": "Food",
+      "怪物": "Monster",
+      "功能调整": "Function adjustment",
+      "数值调整": "Numerical adjustment",
+      "外挂超人": "Sergey Hax",
+      "少女时间": "Witch Time",
+      "冲刺大师": "Dash Master",
+      "恶魔扳机": "Devil Trigger",
+      "抢鲜体验": "Early Access",
+      "完美平衡": "Tyuly Balanced",
+      "莉亚必须死": "Prepare to Hi!",
+      "超级营养": "Mega Nutrients",
+      "滑溜溜": "Slippery Slope",
+      "放马过来": "Get on my Level",
+      "绝不留情": "No mercy",
+      "充满敌意": "Hostile Habitat",
+      "古典治疗": "Classic Heals",
+      "古典快速旅行": "Classic Porter",
+      "禁用成就": "Trophy Block",
+      "技能束缚": "Skill bondage",
+      "怪物伤害": "Monster damage",
+      "战斗治疗": "Combat therapy",
+      "食物冷却": "Food cooling",
+      "掉落率": "Drop rate",
+      "经验值": "Experience value",
+      "金钱": "Money value"
+    },
+    "editorFqa": {
+      "0": ["What is undefined", "New items not yet installed"],
+      "1": [
+        "The added task item does not work",
+        "Please get a normal task prop in the game"
+      ],
+      "2": [
+        "Add items to report errors",
+        "Added items not supported by game version, please empty items directly"
+      ],
+      "3": [
+        "Function failure",
+        "Please make sure the archive has been replaced and restart the game"
+      ]
+    },
+    "Author": {
+      "赞助": "Sponsorship (China special, laugh)"
+    }
   }
 }

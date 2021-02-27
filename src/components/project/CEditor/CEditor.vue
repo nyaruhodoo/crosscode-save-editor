@@ -50,7 +50,11 @@
         <div>{{ $root.locale.editor.金钱 }}: {{ saveLi.player.credit }}</div>
         <div>
           {{ $root.locale.editor.地图 }}:
-          {{ mapFormat(saveLi.area, saveLi.specialMap) }}
+          {{
+            saveLi.area[$root.activeLang] +
+              ' ' +
+              saveLi.specialMap[$root.activeLang]
+          }}
         </div>
         <div>
           {{ $root.locale.editor.剧情 }}:
@@ -73,7 +77,7 @@
   import CEditorAuthor from './CEditorAuthor.vue'
 
   import saveFix from '@/util/saveFix.js'
-  import { numberFormat, mapFormat, timeFormat } from '@/util/stringFormat.js'
+  import { numberFormat, timeFormat } from '@/util/stringFormat.js'
 
   export default {
     components: {
@@ -126,7 +130,6 @@
       },
 
       numberFormat,
-      mapFormat,
       timeFormat,
     },
   }

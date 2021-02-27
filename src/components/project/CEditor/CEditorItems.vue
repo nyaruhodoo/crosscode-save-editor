@@ -165,7 +165,7 @@
 <script>
   import { CloseOutlined } from '@ant-design/icons-vue'
   import CUpload from '@/components/base/CUpload.vue'
-  import allItems from '@/assets/js/data1.3.0-4.json'
+  import allItems from '@/assets/js/data1.4.json'
   import { srtingFormat } from '@/util/stringFormat.js'
 
   export default {
@@ -197,7 +197,7 @@
           if (!rtn[type]) rtn[type] = []
 
           rtn[type].push({
-            name: srtingFormat(name.zh_CN),
+            name: srtingFormat(name[this.$root.activeLang]),
             index,
           })
         })
@@ -229,6 +229,8 @@
 
         // 不要作弊狗
         items[157] = null
+
+        this.message.success(this.$root.locale.editorItems.添加道具完成)
       },
       getItems(itemsId, num = 1) {
         const { items } = this
@@ -245,7 +247,6 @@
               items[index] = num
             }
           } else {
-            console.log(num)
             items[i] = num
           }
         })

@@ -13,7 +13,7 @@
   </div>
 
   <div class="editor-li">
-    <a-button type="primary" @ceditor-lick="player.credit = 9999999">{{
+    <a-button type="primary" @click="player.credit = 9999999">{{
       $root.locale.editorLea.无限金钱
     }}</a-button>
   </div>
@@ -23,7 +23,7 @@
       <template #title>
         <span>{{ $root.locale.editorLea.技能点提示 }}</span>
       </template>
-      <a-button type="primary" @ceditor-lick="skillPointsMax">{{
+      <a-button type="primary" @click="skillPointsMax">{{
         $root.locale.editorLea.无限技能点
       }}</a-button>
     </a-tooltip>

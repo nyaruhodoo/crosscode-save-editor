@@ -211,7 +211,11 @@
         const rtn = {}
 
         for (const [key, value] of Object.entries(itemsFormat)) {
-          const filterArr = value.filter((i) => i.name.includes(searchValue))
+          const filterArr = value.filter((i) => {
+            // 修复大小写匹配...
+            const itemName = i.name.toLowerCase()
+            return itemName.includes(searchValue.toLowerCase())
+          })
           if (filterArr.length) rtn[key] = filterArr
         }
 

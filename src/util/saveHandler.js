@@ -26,11 +26,11 @@ const _decryption = (value, pc) => {
 }
 // 单条数据加密
 const _encryption = (value, pc) => {
-  value = JSON.stringify(value)
-
   if (pc === 'pc') {
+    value = JSON.stringify(value)
     return mark + encrypt(value, key).toString()
   } else {
+    value = JSON.stringify(value, null, '\t')
     return value
   }
 }
@@ -49,5 +49,5 @@ export const saveEncryption = (save, mode) => {
   save = JSON.parse(JSON.stringify(save))
   save.autoSlot = _encryption(save.autoSlot, mode)
   save.slots = save.slots.map((i) => _encryption(i, mode))
-  return JSON.stringify(save)
+  return JSON.stringify(save, null, '\t')
 }
